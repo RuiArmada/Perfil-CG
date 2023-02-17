@@ -28,9 +28,8 @@
 		</lights>
 
         <materialLibs>
-            <materialLib filename="shaders/simple.mlib"/>
+            <materialLib filename="shaders/light.mlib"/>
         </materialLibs>
-
 	</assets>
 	
 	<pipelines>
@@ -43,10 +42,11 @@
 				<lights>
 					<light name="Sun" />
 				</lights>
-                <materialMaps>
-                    <map fromMaterial= "*"
-                         toMaterial="fixedColor" toLibrary="Test"/>
-                </materialMaps>
+                <injectionMaps>
+                    <map toMaterial= "*">
+                        <shader fromMaterial="diffAmbPerVertex" fromLibrary="Lighting"/>
+					</map>
+                </injectionMaps>
 			</pass>
 		</pipeline>
 	</pipelines>
