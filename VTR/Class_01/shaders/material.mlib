@@ -9,7 +9,8 @@
     </shaders>
 
     <materials>
-        <!-- VERSÃO 01 -->
+
+        <!-- VERSION 01 -->
         <material name="v1">
 
             <shader name="v1" >
@@ -22,7 +23,7 @@
 
         </material>
 
-        <!-- VERSÃO 02 -->
+        <!-- VERSION 02 -->
         <material name="v2">
             <color>
                 <DIFFUSE r="0.8" g="0.0" b="0.0" a="1.0" />
@@ -47,7 +48,7 @@
             </shader>       
         </material>
 
-        <!-- VERSÃO 03 -->
+        <!-- VERSION 03 -->
         <material name="v3">
             <shader name="v3">
                 <values>
