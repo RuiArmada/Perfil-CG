@@ -41,8 +41,7 @@
                     <!-- context can also be the current material: context="simple::v2" --> 
                     <!-- note that when using injection maps we want the color of the original material-->       
                     <valueof uniform="diffuse"
-                            type="COLOR"
-                            context="CURRENT"
+                            type="COLOR" context="CURRENT"
                             component="DIFFUSE" />
                 </values>
             </shader>       
