@@ -3,7 +3,7 @@
 	<assets>
 		<scenes>
 			<scene name="rb" param="UNITIZE">
-				<file name="../assets/GreatSword.obj"/>
+				<file name="../assets/Great_Sword.obj"/>
 			</scene>
 		</scenes>
 		
