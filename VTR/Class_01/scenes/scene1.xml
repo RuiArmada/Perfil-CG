@@ -3,7 +3,7 @@
 	<assets>
 		<scenes>
 			<scene name="rb" param="UNITIZE">
-				<file name="../rainbowBench.obj"/>
+				<file name="../assets/RainbowBench.obj"/>
 			</scene>
 		</scenes>
 		
