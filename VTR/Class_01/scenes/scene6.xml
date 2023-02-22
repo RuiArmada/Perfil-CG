@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<project name="RainbowBench - Flat Color" >
+<project name="Great Sword" >
 	<assets>
 		<scenes>
 			<scene name="rb" param="UNITIZE">
-				<file name="../assets/RainbowBench.obj"/>
+				<file name="../assets/GreatSword.obj"/>
 			</scene>
 		</scenes>
 		
@@ -20,9 +20,9 @@
 				<FOV value = "60"/>
 				<NEAR value= "1"/>
 				<FAR value= "100"/>
-                <POSITION x="-0.8143" y="1.066161" z="1.525997" />
-				<VIEW x="0.300459" y="-0.560906" z="-0.771433" />
-                <LOOK_AT_POINT x = 0 y=0 z=0 />
+                <POSITION x="-0.814" y="1.066" z="1.526" />
+				<VIEW x="0.411" y="-0.419" z="-0.809" />
+                <LOOK_AT_POINT x="-0.403" y="0.647" z="0.717" />
 			</camera>
 		</cameras>
 		
@@ -42,7 +42,7 @@
 	</assets>
 	
 	<pipelines>
-		<pipeline name="simple" default="true">
+		<pipeline name="simple">
 			<pass class="default" name="pass1">
 				<scenes>
 					<scene name="rb" />
@@ -51,11 +51,11 @@
 				<lights>
 					<light name="Sun" />
 				</lights>
-                <!-- adding a material map -->
-                <materialMaps>
-                    <map fromMaterial="*"
-                        toLibrary="Material" toMaterial="v1" />
-                </materialMaps>
+                <injectionMaps>
+                    <map toMaterial="*">
+                        <shader fromLibrary="Material" fromMaterial="v3" />
+                    </map>
+                </injectionMaps>
 			</pass>
 		</pipeline>
 	</pipelines>
