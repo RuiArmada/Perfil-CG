@@ -1,0 +1,134 @@
+<?xml version="1.0" ?>
+<materialLib name="Toon">
+
+    <shaders>
+        <shader name="v1" vs="../shaders/Version_01/vertex.vert" ps="../shaders/Version_01/fragment.frag"/>
+        <shader name="v2" vs="../shaders/Version_02/vertex.vert" ps="../shaders/Version_02/fragment.frag"/>
+        <shader name="v3" vs="../shaders/Version_03/vertex.vert" ps="../shaders/Version_03/fragment.frag"/>
+        <shader name="v4" vs="../shaders/Version_04/vertex.vert" ps="../shaders/Version_04/fragment.frag"/>
+        <shader name="v5" vs="../shaders/Version_05/vertex.vert" ps="../shaders/Version_05/fragment.frag"/>
+     </shaders>
+
+    <materials>
+
+        <!-- VERSION 1 -->
+        <material name="v1">
+            <shader name="v1">
+                <values>
+                    <valueof uniform="l_dir" type="LIGHT"
+                         component="DIRECTION" id="0"/>
+
+                    <valueof uniform="m_pvm" type="RENDERER"
+                         component="PROJECTION_VIEW_MODEL"/>
+
+                    <valueof uniform="diffuse" type="COLOR"
+                         component="DIFFUSE"/>
+                    
+                    <valueof uniform="m_normal" type="RENDERER"
+                         component="NORMAL"/>
+
+                    <valueof uniform="m_view" type="CAMERA"
+                         component="VIEW"/>
+                </values>
+            </shader>
+        </material>
+
+        <!-- VERSION 2 -->
+        <material name="v2">
+            <shader name="v2">
+                <values>
+                    <valueof uniform="l_dir" type="LIGHT"
+                         component="DIRECTION" id="0"/>
+
+                    <valueof uniform="m_pvm" type="RENDERER"
+                         component="PROJECTION_VIEW_MODEL"/>
+
+                    <valueof uniform="diffuse" type="COLOR"
+                         component="DIFFUSE"/>
+                    
+                    <valueof uniform="m_normal" type="RENDERER"
+                         component="NORMAL"/>
+
+                    <valueof uniform="m_view" type="CAMERA"
+                         component="VIEW"/>
+                </values>
+            </shader>
+        </material>
+
+        <!-- VERSION 3 -->
+        <material name="v3">
+            <shader name="v3">
+                <values>
+                    <valueof uniform="l_dir" type="LIGHT"
+                         component="DIRECTION" id="0"/>
+
+                    <valueof uniform="m_pvm" type="RENDERER"
+                         component="PROJECTION_VIEW_MODEL"/>
+
+                    <valueof uniform="diffuse" type="COLOR"
+                         component="DIFFUSE"/>
+                    
+                    <valueof uniform="m_normal" type="RENDERER"
+                         component="NORMAL"/>
+
+                    <valueof uniform="m_view" type="CAMERA"
+                         component="VIEW"/>
+                </values>
+            </shader>
+        </material>
+
+        <!-- VERSION 4 -->
+        <material name="v4">
+            <shader name="v4">
+                <values>
+                    <valueof uniform="l_dir" type="LIGHT"
+                         component="DIRECTION" id="0"/>
+
+                    <valueof uniform="m_pvm" type="RENDERER"
+                         component="PROJECTION_VIEW_MODEL"/>
+
+                    <valueof uniform="diffuse" type="COLOR"
+                         component="DIFFUSE"/>
+                    
+                    <valueof uniform="m_normal" type="RENDERER"
+                         component="NORMAL"/>
+
+                    <valueof uniform="m_view" type="CAMERA"
+                         component="VIEW"/>
+                </values>
+            </shader>
+        </material>
+
+        <!-- VERSION 5 -->
+        <material name="v5">
+          <shader name="v5">
+              <values>
+               
+                  <valueof uniform="l_dir" type="LIGHT"
+                       component="DIRECTION" id="0"/>
+
+                  <valueof uniform="m_pvm" type="RENDERER"
+                       component="PROJECTION_VIEW_MODEL"/>
+
+                  <valueof uniform="diffuse" type="COLOR"
+                       component="DIFFUSE"/>
+                  
+                  <valueof uniform="m_normal" type="RENDERER"
+                       component="NORMAL"/>
+
+                  <valueof uniform="m_view" type="CAMERA"
+                       component="VIEW"/>
+                  
+                  <valueof uniform="specular" type="COLOR"
+                       component="SPECULAR"/>
+
+                  <valueof uniform="shininess" type="COLOR"
+                       component="DIRECTION"/>
+
+              </values>
+          </shader>
+      </material>
+        
+    </materials>
+
+</materialLib>

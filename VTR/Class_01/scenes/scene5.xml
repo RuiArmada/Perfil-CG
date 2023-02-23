@@ -35,7 +35,7 @@
 
         <!-- adding a material lib -->
 		<materialLibs>
-			<materialLib filename="../shaders/material.mlib"/>
+			<materialLib filename="../materials/material.mlib"/>
 		</materialLibs>
 
 

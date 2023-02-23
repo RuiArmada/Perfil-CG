@@ -2,9 +2,9 @@
 <materialLib name="Material">
 
     <shaders>
-        <shader name="v1" vs="Version_01/vertex.vert" ps="Version_01/fragment.frag" />
-        <shader name="v2" vs="Version_02/vertex.vert" ps="Version_02/fragment.frag" />
-        <shader name="v3" vs="Version_03/vertex.vert" ps="Version_03/fragment.frag" />
+        <shader name="v1" vs="../shaders/Version_01/vertex.vert" ps="../shaders/Version_01/fragment.frag" />
+        <shader name="v2" vs="../shaders/Version_02/vertex.vert" ps="../shaders/Version_02/fragment.frag" />
+        <shader name="v3" vs="../shaders/Version_03/vertex.vert" ps="../shaders/Version_03/fragment.frag" />
 
     </shaders>
 

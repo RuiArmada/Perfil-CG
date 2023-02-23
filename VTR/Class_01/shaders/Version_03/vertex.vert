@@ -1,4 +1,4 @@
-#version 460
+#version 330
 
 uniform mat4 m_pvm;
 uniform mat3 m_normal;
