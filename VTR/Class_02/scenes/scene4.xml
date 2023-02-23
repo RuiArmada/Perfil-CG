@@ -1,49 +1,49 @@
 <?xml version="1.0"?>
-<project name="Teaport - Toon Shader">
-
+<project name="Teapot - Toon Shader">
+    
     <assets>
 
         <scenes>
-            <scene name="teapot" 
-                   filename="../assets/Teapot.3ds" 
-                   param="SWAP_YZ UNITIZE"/>
+            <scene name = "teapot" filename = "../assets/Teapot.3ds" param="UNITIZE SWAP_YZ" />
         </scenes>
-
+        
         <cameras>
             <camera name="main">
-                <POSITION x="0" y="0" z="1.750" />
+                <POSITION x="-0.119" y="0" z="-1.843" />
+                <LOOK_AT_POINT x="-0.087" y="0.007" z="-0.748" />
             </camera>
         </cameras>
 
         <lights>
-            <light name="Sun">
-                <DIRECTION x="5" y="5" z="5"/>
+            <light name="Sun" >
+                <DIRECTION x="5" y="-5" z="5" />
             </light>
         </lights>
 
         <materialLibs>
-            <materialLib filename="../materials/material.mlib"/>
+            <materialLib filename="../materials/material.mlib" />
         </materialLibs>
 
     </assets>
 
     <pipelines>
         <pipeline name="toon">
-            <pass name="toon" class="default">
-
+            <pass name="toon" class="default" >
+                
                 <scenes>
-                    <scene name="teapot"/>
+                    <scene name="teapot" />
                 </scenes>
 
-                <camera name="main"/>
+                <camera name="main" /> 
                 
                 <lights>
-                    <light name="Sun"/>
+                    <light name="Sun" />
                 </lights>
 
                 <injectionMaps>
                     <map toMaterial="*">
-                        <shader fromLibrary="Toon" fromMaterial="v4"/>
+                        <shader fromMaterial="v4" fromLibrary="Toon"
+                        />
                     </map>
                 </injectionMaps>
 

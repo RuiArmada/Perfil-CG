@@ -22,7 +22,7 @@
 				<FAR value= "100"/>
                 <POSITION x="-0.8143" y="1.066161" z="1.525997" />
 				<VIEW x="0.300459" y="-0.560906" z="-0.771433" />
-                <LOOK_AT_POINT x=0 y=0 z=0 />
+                <LOOK_AT_POINT x="0" y="0" z="0" />
 			</camera>
 		</cameras>
 		
@@ -33,7 +33,6 @@
 			</light>
 		</lights>
 
-        <!-- adding a material lib -->
 		<materialLibs>
 			<materialLib filename="../materials/material.mlib"/>
 		</materialLibs>
@@ -51,10 +50,10 @@
 				<lights>
 					<light name="Sun" />
 				</lights>
-                <!-- adding a material map -->
+
                 <materialMaps>
                     <map fromMaterial="*"
-                        toLibrary="Material" toMaterial="v1" />
+                        toLibrary="Material" toMaterial="v2" />
                 </materialMaps>
 			</pass>
 		</pipeline>

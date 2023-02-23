@@ -20,14 +20,5 @@ void main(){
 
     intensity = max(dot(l,n),0.0);
 
-    if(intensity > 0.9)
-        intensity = 0.9;
-    else if(intensity > 0.75)
-        intensity = 0.75;
-    else if(intensity > 0.5)
-        intensity = 0.5;
-    else
-        intensity = 0.25;
-
     gl_Position = m_pvm * position;
 }

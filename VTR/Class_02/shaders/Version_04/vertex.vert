@@ -9,11 +9,10 @@ in vec4 position;
 in vec3 normal;
 
 // Output
-out vec3 norm;
+out vec3 n;
 
-void main(){
-
-    norm = normalize(m_normal * normal);
-
+void main() {
+    n = normalize(m_normal * normal);
+    
     gl_Position = m_pvm * position;
 }

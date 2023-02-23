@@ -27,6 +27,12 @@ void main(){
 
     float intensity = max(dot(l,n),0.0);
 
+    if(intensity > 0.0) {
+        vec3 h = normalize(l + e);
+        float intSpec = max(dot(h, n), 0.0);
+        spec = specular * pow(intSpec, shininess);
+    }
+
     if(intensity > 0.9)
         intensity = 0.9;
     else if(intensity > 0.75)

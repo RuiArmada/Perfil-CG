@@ -1,32 +1,28 @@
 #version 330
 
-// Uniform
+// Uniforms
 uniform vec4 diffuse;
 uniform mat4 m_view;
-uniform vec4 l_dir; // world space
+uniform vec4 l_dir;
 
-// Input streams
-in vec3 norm;
+// Input Stream
+in vec3 n;
 
 // Output
 out vec4 color;
 
-void main(){
-
+void main() {
     vec3 l = normalize(vec3(m_view * -l_dir));
-    vec3 nn = normalize(norm);
+    float intensity = max(dot(normalize(n), l), 0.0);
 
-    float intensity = max(dot(l,nn),0.0);
-
-    if(intensity > 0.9)
+    if (intensity > 0.9) 
         intensity = 0.9;
-    else if(intensity > 0.75)
+    else if (intensity > 0.75) 
         intensity = 0.75;
-    else if(intensity > 0.5)
+    else if (intensity > 0.5) 
         intensity = 0.5;
-    else
+    else 
         intensity = 0.25;
 
     color = intensity * diffuse;
-
 }
