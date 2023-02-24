@@ -20,6 +20,7 @@ out vec4 color;
 void main(){
 
     vec4 spec = vec4(0.0);
+    float shiny;
 
     vec3 l = normalize(vec3(m_view * -l_dir));
     vec3 n = normalize(DataIn.norm);
@@ -27,20 +28,17 @@ void main(){
 
     float intensity = max(dot(l,n),0.0);
 
+    if(shininess == 0.0) {
+        shiny = 50.0;
+    }
+
     if(intensity > 0.0) {
         vec3 h = normalize(l + e);
         float intSpec = max(dot(h, n), 0.0);
-        spec = specular * pow(intSpec, shininess);
+        
+        spec = specular * pow(intSpec, shiny);
     }
 
-    if(intensity > 0.9)
-        intensity = 0.9;
-    else if(intensity > 0.75)
-        intensity = 0.75;
-    else if(intensity > 0.5)
-        intensity = 0.5;
-    else
-        intensity = 0.25;
 
     color = max(intensity * diffuse + spec, diffuse * 0.25);
 
