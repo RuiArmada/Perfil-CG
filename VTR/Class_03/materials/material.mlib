@@ -2,15 +2,18 @@
 <materialLib name="lighting" >
 
     <shaders>
-        <shader name="lighting" 
-                        vs="../shaders/vertex.vert"
-                        ps="../shaders/fragment.frag" />
+        <shader name="v1" 
+                        vs="../shaders/Version_01/vertex.vert"
+                        ps="../shaders/Version_01/fragment.frag" />
+        <shader name="v2" 
+                        vs="../shaders/Version_02/vertex.vert"
+                        ps="../shaders/Version_02/fragment.frag" />
     </shaders>
 
 
     <materials>
-        <material name="lighting" >
-            <shader name="lighting" >
+        <material name="v1" >
+            <shader name="v1" >
                 <values>
                     <valueof uniform="l_dir" type="LIGHT"
                             component="DIRECTION" id="0" />
@@ -32,6 +35,41 @@
                 </values>
             </shader>
         </material>
+        
+        <material name="v2" >
+            <shader name="v2" >
+                <values>
+                    <valueof uniform="m_pvm" type="RENDERER"
+                            component="PROJECTION_VIEW_MODEL" />
+                    <valueof uniform="diffuse" type="COLOR"
+                            component = "DIFFUSE" />
+                    <valueof uniform="m_normal" type="RENDERER"
+                            component = "NORMAL" />
+                    <valueof uniform="m_view" type="RENDERER"
+                            component="VIEW" />
+                    <valueof uniform="specular" type="COLOR"
+                            component="SPECULAR"/>
+                    <valueof uniform="shininess" type="COLOR"
+                            component="SHININESS"/>
+                    <valueof uniform="m_viewModel" type="RENDERER"
+                            component="VIEW_MODEL"/>
+                    <valueof uniform="spot_Dir" type="LIGHT"
+                            component="SPOT_DIRECTION" context="CURRENT" id="0"/>
+                    <valueof uniform="l_spotCutoff" type="LIGHT"
+                            component="SPOT_CUTOFF" context="CURRENT" id="0"/>
+                    <valueof uniform="lPos" type="LIGHT"
+                            component="POSITION" context="CURRENT" id="0"/>
+                </values>
+            </shader>
+        </material>
+
+        <!-- 
+        <material name="shine">
+                <color>
+                        <SHININESS value="50"/>
+                </color>
+        </material>
+        -->
 
   </materials>
 </materialLib>

@@ -1,4 +1,4 @@
-#version 330
+#version 450
 
 // Adding a uniform with the diffuse color
 uniform vec4 diffuse;

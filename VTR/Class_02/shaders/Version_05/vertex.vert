@@ -1,4 +1,4 @@
-#version 330
+#version 450
 
 // Uniforms
 uniform mat4 m_pvm;

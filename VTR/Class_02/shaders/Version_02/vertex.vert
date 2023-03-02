@@ -1,4 +1,4 @@
-#version 330
+#version 450
 
 // Uniforms
 uniform vec4 l_dir; // world space

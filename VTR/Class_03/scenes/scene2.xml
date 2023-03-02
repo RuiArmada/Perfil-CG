@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<project name="Lighting - Specular" >
+<project name="Lighting - SpotLight" >
 
     <assets>
 
@@ -72,11 +72,11 @@
                 </scenes>
                 <camera name="main" />
                 <lights>
-                    <light name="sun" />
+                    <light name="lamp" />
                 </lights>
                 <injectionMaps>
                     <map toMaterial="*">
-                        <shader fromMaterial ="v1" fromLibrary="lighting" />
+                        <shader fromMaterial ="v2" fromLibrary="lighting" />
                         <!-- <color fromMaterial="shine" fromLibrary="lighting"/> -->
                     </map>
                 </injectionMaps>

@@ -1,4 +1,4 @@
-#version 330
+#version 450
 
 // Uniform
 uniform vec4 diffuse;
