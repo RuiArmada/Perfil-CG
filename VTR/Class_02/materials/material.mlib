@@ -133,6 +133,9 @@
                  <valueof uniform="shininess" type="COLOR"
                       component="SHININESS"/>
 
+                 <valueof uniform="m_viewModel" type="RENDERER"
+                      component="VIEW_MODEL"/>
+
               </values>
           </shader>
       </material>

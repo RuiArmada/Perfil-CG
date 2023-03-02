@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<project name="Lighting" >
+
+    <assets>
+
+		<scenes>
+			<scene name="plane" >
+				<TRANSLATE x = "0" y = "-0.4" z = "0" />
+				<SCALE x = "2" y = "1" z = "2" />
+				<geometry name="plane" type ="SQUARE" material="plane"/>
+			</scene>
+			<scene name="tA" param="UNITIZE SWAP_YZ">
+				<TRANSLATE x = "-1" y = "0" z = "-1" />
+				<file name="../assets/teapot.3ds"/>
+			</scene>
+			<scene name="tB" param="UNITIZE SWAP_YZ">
+				<TRANSLATE x = "1" y = "0" z = "-1" />
+				<file name="../assets/teapot.3ds"/>
+			</scene>
+			<scene name="tC" param="UNITIZE SWAP_YZ">
+				<TRANSLATE x = "-1" y = "0" z = "1" />
+				<file name="../assets/teapot.3ds"/>
+			</scene>
+			<scene name="tD" param="UNITIZE SWAP_YZ">
+				<TRANSLATE x = "1" y = "0" z = "1" />
+				<file name="../assets/teapot.3ds"/>
+			</scene>
+		</scenes>        
+        
+        <viewports>
+            <viewport name="MainViewport" >
+                <!-- <CLEAR_COLOR r="1.0" b = "1.0" g = "1.0" /> -->
+            </viewport>
+        </viewports>
+
+        <cameras>
+            <camera name="main" >
+                <viewport name="MainViewport" />
+                <POSITION x="0.402" y="0.974" z="1.341" />
+                <LOOK_AT_POINT x="0" y="0" z="0" />>
+                <NEAR value="0.01" />
+            </camera>
+        </cameras>
+
+        <lights>
+            <light name="sun" >
+                <DIRECTION x="-5" y="-5" z = "-5" />
+            </light>
+
+            <light name="lamp" >
+                <POSITION x="0" y="2" z = "0" />
+                <SPOT_DIRECTION x="0" y="-1" z="0" />
+                <SPOT_CUTOFF value="0.8" />
+            </light>
+
+        </lights>
+    
+        <materialLibs>
+            <materialLib filename="../materials/material.mlib" />
+        </materialLibs>
+    </assets>
+
+    <pipelines>
+        <pipeline name="lighting" >
+            <pass name="lighting" class="default" >
+                <scenes>
+                    <scene name="tA" />
+                    <scene name="tB" />
+                    <scene name="tC" />
+                    <scene name="tD" />
+                    <scene name="plane" />
+                </scenes>
+                <camera name="main" />
+                <lights>
+                    <light name="sun" />
+                </lights>
+                <injectionMaps>
+                    <map toMaterial="*">
+                        <shader fromMaterial ="lighting" fromLibrary="lighting" />
+                    </map>
+                </injectionMaps>
+            </pass>
+        </pipeline>
+
+
+    </pipelines>
+
+
+</project>
