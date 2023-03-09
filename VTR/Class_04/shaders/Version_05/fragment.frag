@@ -38,7 +38,7 @@ void main() {
         color = white;
 
     else {
-        f = (ft.s - 1+gap) * 1/gap;
+        f = (ft.s - 1 + gap) * 1/gap;
         color = (1 - f) * white + f * blue;
     }
 }
