@@ -1,0 +1,44 @@
+<project name="Green Teapot" >
+
+    <assets>
+        <scenes>
+            <scene name="teapot" filename="../assets/Teapot.3ds" param="UNITIZE SWAP_YZ"/>
+        </scenes>
+
+        <viewports>
+            <viewport name="mainV" >
+                <!-- <CLEAR_COLOR x="1.0" y="1.0" z="1.0" /> -->
+            </viewport>
+        </viewports>
+
+        <cameras>
+            <camera name="mainC" >
+                <viewport name="mainV" />
+                <POSITION x="0.632" y="0.446" z="1.478" />
+                <VIEW x="-0.373" y="-0.286" z="-0.883" />
+            </camera>
+        </cameras>
+
+        <materialLibs>
+            <materialLib filename = "../materials/texture.mlib" />
+        </materialLibs>
+
+    </assets>
+
+    <pipelines>
+        <pipeline name="texturing" >
+            <pass class="default" name="p1" >
+                <scenes>
+                    <scene name="teapot" />
+                </scenes>
+                <camera name="mainC" />
+                <materialMaps>
+                    <map fromMaterial="*"
+                            toLibrary="texturing" toMaterial="v1" />
+                </materialMaps>
+
+            </pass>
+
+        </pipeline>
+    </pipelines>
+</project>

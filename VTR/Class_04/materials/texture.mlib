@@ -1,0 +1,166 @@
+<materialLib name="texturing">
+
+    <textures>
+        <texture name="teapot" filename="../textures/teapot.jpg" mipmap="true"/>
+
+        <texture name="wood" filename="../textures/crate.jpg" mipmap="true"/>
+
+        <texture name="neon" filename="../textures/l3d.jpg" mipmap="true"/>
+    </textures>
+
+    <shaders>
+        <shader name="v1" vs="../shaders/Version_01/vertex.vert"
+                            ps="../shaders/Version_01/fragment.frag" />
+
+        <shader name="v2" vs="../shaders/Version_02/vertex.vert"
+                            ps="../shaders/Version_02/fragment.frag" />
+
+        <shader name="v3" vs="../shaders/Version_03/vertex.vert"
+                            ps="../shaders/Version_03/fragment.frag" />
+
+        <shader name="v4" vs="../shaders/Version_04/vertex.vert"
+                            ps="../shaders/Version_04/fragment.frag" />
+
+        <shader name="v5" vs="../shaders/Version_05/vertex.vert"
+                            ps="../shaders/Version_05/fragment.frag" />
+
+        <shader name="v6" vs="../shaders/Version_06/vertex.vert"
+                            ps="../shaders/Version_06/fragment.frag" />
+
+        <shader name="v7" vs="../shaders/Version_07/vertex.vert"
+                            ps="../shaders/Version_07/fragment.frag" />
+    </shaders>
+
+    <materials>
+
+        <material name="v1">
+            <shader name="v1" >
+                <values>
+                    <valueof uniform = "m_pvm" type="RENDERER"
+                                component="PROJECTION_VIEW_MODEL"/>
+                </values>
+
+            </shader>
+        </material>
+
+        <material name="v2">
+            <shader name="v2" >
+                <values>
+                    <valueof uniform = "m_pvm" type="RENDERER"
+                                component="PROJECTION_VIEW_MODEL"/>
+
+                    <valueof uniform = "tex" type="TEXTURE_BINDING"
+                                component="UNIT" id="0"/>
+                </values>
+
+            </shader>
+
+            <textures>
+                <texture name="teapot" UNIT="0" />
+            </textures>
+        </material>
+
+        <material name="v3">
+            <shader name="v3" >
+                <values>
+                    <valueof uniform = "m_pvm" type="RENDERER"
+                                component="PROJECTION_VIEW_MODEL"/>
+
+                    <valueof uniform = "tex" type="TEXTURE_BINDING"
+                                component="UNIT" id="0"/>
+                </values>
+
+            </shader>
+
+            <textures>
+                <texture name="teapot" UNIT="0" />
+            </textures>
+        </material>
+
+        <material name="v4">
+            <shader name="v4" >
+                <values>
+                    <valueof uniform = "m_pvm" type="RENDERER"
+                                component="PROJECTION_VIEW_MODEL"/>
+                </values>
+
+            </shader>
+
+            <textures>
+                <texture name="teapot" UNIT="0" />
+            </textures>
+        </material>
+
+        <material name="v5">
+            <shader name="v5" >
+                <values>
+                    <valueof uniform = "m_pvm" type="RENDERER"
+                                component="PROJECTION_VIEW_MODEL"/>
+                </values>
+
+            </shader>
+
+            <textures>
+                <texture name="teapot" UNIT="0" />
+            </textures>
+        </material>
+
+        <material name="v6">
+            <shader name="v6" >
+                <values>
+                    <valueof uniform = "m_pvm" type="RENDERER"
+                                component="PROJECTION_VIEW_MODEL"/>
+                </values>
+
+            </shader>
+
+            <textures>
+                <texture name="teapot" UNIT="0" />
+            </textures>
+        </material>
+
+        <material name="v7">
+            <shader name="v7" >
+                <values>
+                    <valueof uniform = "m_pvm" type="RENDERER"
+                                component="PROJECTION_VIEW_MODEL"/>
+
+                    <valueof uniform = "tex1" type="TEXTURE_BINDING"
+                                component="UNIT" id="0"/>
+                    
+                    <valueof uniform = "tex2" type="TEXTURE_BINDING"
+                                component="UNIT" id="1"/>
+                    
+                    <valueof uniform="l_dir" type="LIGHT"
+                            component="DIRECTION" id="0" />
+                    
+                    <valueof uniform="shininess" type="COLOR"
+                            component="SHININESS"/>
+
+                    <valueof uniform="m_viewModel" type="RENDERER"
+                            component="VIEW_MODEL"/>
+
+                    <valueof uniform="m_view" type="RENDERER"
+                            component="VIEW" />
+
+                    <valueof uniform="m_normal" type="RENDERER"
+                            component = "NORMAL" />
+                </values>
+
+            </shader>
+
+            <textures>
+                <texture name="wood" UNIT="0" />
+                <texture name="neon" UNIT="1" />
+            </textures>
+            
+            <color>
+                <SHININESS value="128"/>
+            </color>
+        </material>
+
+    </materials>
+
+
+
+</materialLib>    

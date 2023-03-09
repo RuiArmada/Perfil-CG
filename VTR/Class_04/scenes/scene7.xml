@@ -1,0 +1,53 @@
+<project name="Neon Wood Crate" >
+
+    <assets>
+        <scenes>
+            <scene name="cube" filename="../assets/cube2.obj" param="UNITIZE SWAP_YZ"/>
+        </scenes>
+
+        <viewports>
+            <viewport name="mainV" >
+                <!-- <CLEAR_COLOR x="1.0" y="1.0" z="1.0" /> -->
+            </viewport>
+        </viewports>
+
+        <cameras>
+            <camera name="mainC" >
+                <viewport name="mainV" />
+                <POSITION x="-2.120" y="1.623" z="2.872" />
+                <VIEW x="0.530" y="-0.462" z="-0.711" />
+            </camera>
+        </cameras>
+
+        <lights>
+            <light name="Sun">
+                <DIRECTION x="-5" y="-5" z = "-5" />
+            </light>
+        </lights>
+
+        <materialLibs>
+            <materialLib filename = "../materials/texture.mlib" />
+        </materialLibs>
+
+    </assets>
+
+    <pipelines>
+        <pipeline name="texturing" >
+            <pass class="default" name="p1" >
+                <scenes>
+                    <scene name="cube" />
+                </scenes>
+                <camera name="mainC" />
+                <lights>
+                    <light name="Sun" />
+                </lights>
+                <materialMaps>
+                    <map fromMaterial="*"
+                            toLibrary="texturing" toMaterial="v7" />
+                </materialMaps>
+
+            </pass>
+
+        </pipeline>
+    </pipelines>
+</project>
