@@ -16,7 +16,7 @@ void main() {
 
     int div = 10;
 
-    vec2 ft = tc * div;
+    vec2 ft = fract(tc * div);
 
     vec2 deriv = vec2(dFdx(ft.s), dFdy(ft.s));
 

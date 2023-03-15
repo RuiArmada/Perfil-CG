@@ -20,7 +20,7 @@
         </cameras>
 
         <materialLibs>
-            <materialLib filename = "../materials/texture.mlib" />
+            <materialLib filename = "../materials/material.mlib" />
         </materialLibs>
 
     </assets>

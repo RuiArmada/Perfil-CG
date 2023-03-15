@@ -29,6 +29,9 @@
 
         <shader name="v7" vs="../shaders/Version_07/vertex.vert"
                             ps="../shaders/Version_07/fragment.frag" />
+
+        <shader name="v8" vs="../shaders/Version_08/vertex.vert"
+                            ps="../shaders/Version_08/fragment.frag" />
     </shaders>
 
     <materials>
@@ -121,6 +124,20 @@
 
         <material name="v7">
             <shader name="v7" >
+                <values>
+                    <valueof uniform = "m_pvm" type="RENDERER"
+                                component="PROJECTION_VIEW_MODEL"/>
+                </values>
+
+            </shader>
+
+            <textures>
+                <texture name="teapot" UNIT="0" />
+            </textures>
+        </material>
+
+        <material name="v8">
+            <shader name="v8" >
                 <values>
                     <valueof uniform = "m_pvm" type="RENDERER"
                                 component="PROJECTION_VIEW_MODEL"/>

@@ -14,13 +14,13 @@
         <cameras>
             <camera name="mainC" >
                 <viewport name="mainV" />
-                <POSITION x="0.632" y="0.446" z="1.478" />
+                <POSITION x="0.632" y="0.446" z="1.478" /> 
                 <VIEW x="-0.373" y="-0.286" z="-0.883" />
             </camera>
         </cameras>
 
         <materialLibs>
-            <materialLib filename = "../materials/texture.mlib" />
+            <materialLib filename = "../materials/material.mlib" />
         </materialLibs>
 
     </assets>
