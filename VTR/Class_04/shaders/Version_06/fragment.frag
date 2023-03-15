@@ -3,8 +3,8 @@
 // uniforms
 
 
-vec4 blue = vec4(0.3, 0.3, 1.0, 1);
-vec4 white = vec4(0.9, 0.9, 0.9, 1);
+vec4 blue = vec4(0.3,0.3,1,1);
+vec4 white = vec4(0.9,0.9,0.9,1);
 
 // interpolated inputs
 in vec2 tc;
@@ -13,32 +13,34 @@ in vec2 tc;
 out vec4 color;
 
 void main() {
-    // float k = 0.5;
-    float gap = 0.01;
-    float f;
-    int div=10;
 
-    vec2 ft = fract(div * tc);
+    int div = 10;
+
+    vec2 ft = tc * div;
+
     vec2 deriv = vec2(dFdx(ft.s), dFdy(ft.s));
 
-    gap = 2.5 * length(deriv) + 0.01;
+    float gap = 1.5 * length(deriv);
 
-    f = smoothstep(0.5 - gap, 0.5, ft.s) - smoothstep(1.0 - gap, 1, ft.s);
-    color = mix(blue, white, f);
-    
-    if(ft.s < 0.5 - gap)
+    float f;
+
+
+    f = smoothstep(0.5 - gap, 0.5, ft.s) - smoothstep(1.0 - gap, 1.0, ft.s);
+    color = vec4(gap);
+
+
+    /*if (ft.s < 0.5 - gap) {
         color = blue;
-
-    else if(ft.s < 0.5) {
-        f = (ft.s - 0.5 + gap) * 1/gap;
-        color = mix(blue,white,f);
     }
-
-    else if(ft.s < 1 - gap)
+    else if (ft.s < 0.5) {
+        f = (ft.s - 0.4) * 1/gap;
+        color = (1 - f) * blue + f * white;
+    }
+    else if (ft.s < 1 - gap) {
         color = white;
-
-    else {
-        f = (ft.s - 1+gap) * 1/gap;
-        color = mix(white,blue,f);
     }
+    else {
+        f = (ft.s - 1 + gap) * 1/gap;
+        color = (1 - f) * white + f * blue;
+    }*/
 }
