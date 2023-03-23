@@ -1,4 +1,4 @@
-#version 460
+#version 440
 
 uniform samplerCube tex_cm;
 in vec4 pos;

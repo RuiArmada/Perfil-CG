@@ -1,0 +1,45 @@
+<project name="Reflexion + Transparancy - Teapot" width="1024" height="1024" >
+
+    <assets>
+        <scenes>
+            <scene name="SkyBox" >
+                <geometry name="skyBox" material="skybox" type="BOX" >
+                    <SCALE x="10" y="10" z="10" />
+                </geometry>
+            </scene>
+            <scene name="teapot" filename="../assets/Teapot.3ds" param="UNITIZE SWAP_YZ">
+            
+            </scene>
+        </scenes>
+
+        <cameras>
+            <camera name="mainC" >
+                <POSITION x="0" y="0" z="1.950" />
+                <VIEW x="0" y="0" z="-1" />
+                <NEAR value="0.01" />
+            </camera>
+        </cameras>
+
+        <materialLibs>
+            <materialLib filename="../materials/material.mlib" />
+        </materialLibs>
+    </assets>
+
+    <pipelines>
+        <pipeline name = "basePip" >
+            <pass class="default" name="passPip" >
+                <scenes>
+                    <scene name="SkyBox" />
+                    <scene name="teapot" />
+                </scenes>
+                <camera name = "mainC" />
+                <materialMaps>
+                    <map fromMaterial="skybox"
+                        toMaterial="skybox" toLibrary="base" />
+                    <map fromMaterial="Default"
+                        toMaterial="v1" toLibrary="base"/>
+                </materialMaps>
+            </pass>
+        </pipeline>
+    </pipelines>
+</project>

@@ -1,4 +1,4 @@
-<project name="Base" width="1024" height="1024" >
+<project name="Chromatic Dispersion - Teapot" width="1024" height="1024" >
 
     <assets>
         <scenes>
@@ -14,7 +14,7 @@
 
         <cameras>
             <camera name="mainC" >
-                <POSITION x="0" y="0" z="5" />
+                <POSITION x="0" y="0" z="1.950" />
                 <VIEW x="0" y="0" z="-1" />
                 <NEAR value="0.01" />
             </camera>
@@ -35,7 +35,9 @@
                 <camera name = "mainC" />
                 <materialMaps>
                     <map fromMaterial="skybox"
-                        toMaterial="v1" toLibrary="base" />
+                        toMaterial="skybox" toLibrary="base" />
+                    <map fromMaterial="Default"
+                        toMaterial="v3" toLibrary="base"/>
                 </materialMaps>
             </pass>
         </pipeline>

@@ -1,4 +1,4 @@
-#version 460
+#version 440
 
 uniform mat4 m_pvm;
 uniform vec4 cam_pos;
