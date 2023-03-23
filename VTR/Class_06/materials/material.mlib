@@ -1,0 +1,56 @@
+<materialLib name="base">
+
+    <textures>
+        <cubeMap name="CM" 
+			filePosX="../textures/nissibeach_cm/posx.jpg"
+			fileNegX="../textures/nissibeach_cm/negx.jpg"
+			filePosY="../textures/nissibeach_cm/posy.jpg"
+			fileNegY="../textures/nissibeach_cm/negy.jpg"
+			filePosZ="../textures/nissibeach_cm/posz.jpg"
+			fileNegZ="../textures/nissibeach_cm/negz.jpg"	
+		/>
+    </textures>
+
+    <shaders>
+        <shader name="v1" vs = "../shaders/Version_01/vertex.vert" 
+                          ps = "../shaders/Version_01/fragment.frag" />
+
+   </shaders>
+
+    <states>
+        <state name="skybox" >
+            <CULL_TYPE value="FRONT" />
+            <DEPTH_MASK value="false" />
+        </state>
+    </states>
+
+    <materials>
+        <material name="v1" >
+            <shader name="v1" >
+                <values>
+                    <valueof uniform="m_pvm" 
+                            type="RENDERER" 
+                            component="PROJECTION_VIEW_MODEL" />
+                    <valueof uniform="cam_pos" 
+                            type="CAMERA"
+                            component="POSITION" />
+
+                      <valueof uniform="tex_cm" 
+                            type="TEXTURE_BINDING" 
+                            component="UNIT" id ="6" />
+
+              </values>
+            </shader>
+            <textures>
+               <texture name="CM" UNIT="6" >
+                    <WRAP_S value="CLAMP_TO_EDGE" />
+                    <WRAP_T value="CLAMP_TO_EDGE" />
+                </texture>
+            </textures>
+            <state name = "skybox" />
+        </material>
+
+
+
+    </materials>
+</materialLib>
