@@ -20,6 +20,9 @@
 
 		<shader name="v4" 	vs = "../shaders/Version_04/vertex.vert" 
 							ps = "../shaders/Version_04/fragment.frag" />
+
+		<shader name="v5" 	vs = "../shaders/Version_05/vertex.vert" 
+							ps = "../shaders/Version_05/fragment.frag" />
 	</shaders>
 	
 	<materials>
@@ -214,6 +217,63 @@
 				<texture name="maskLights" UNIT = "2" />
 
 				<texture name="maskClouds" UNIT = "3" />
+			</textures>
+			<color>
+                <SHININESS value="128"/>
+            </color>
+		</material>
+
+		<material name="v5">
+			<shader name="v5">
+				<values>
+					<valueof uniform="m_pvm" 
+							 type="RENDERER"  
+							 component="PROJECTION_VIEW_MODEL" />
+					 
+					<valueof uniform="m_viewModel" 
+							 type="RENDERER"  
+							 component="VIEW_MODEL" />
+					 
+					<valueof uniform="m_view" 
+							 type="RENDERER" 
+							 component="VIEW" />
+					 
+					<valueof uniform="m_normal" 
+							 type="RENDERER" 
+							 component="NORMAL" />
+					 
+					<valueof uniform="l_dir"
+							 type="LIGHT"  
+							 component="DIRECTION" id="0"/>
+
+					<valueof uniform="shininess"
+							 type="COLOR"  
+							 component="SHININESS" id="0"/>
+					 
+					<valueof uniform="texEarth"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="0" />
+
+					<valueof uniform="texSpec"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="1" />
+
+					<valueof uniform="texLights"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="2" />
+
+					<valueof uniform="timer"
+							 type="RENDERER"  
+							 component="TIMER"/>
+				</values>
+			</shader>
+			<textures>
+				<texture name="earth" UNIT = "0" />
+			
+				<texture name="maskSpec" UNIT = "1" />
+
+				<texture name="maskLights" UNIT = "2" />
+
 			</textures>
 			<color>
                 <SHININESS value="128"/>
