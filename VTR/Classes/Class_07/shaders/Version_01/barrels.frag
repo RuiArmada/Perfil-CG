@@ -1,5 +1,59 @@
-#version 460
+#version 440
 
+in vec3 n, t;
+in vec2 tc;
+in flat ivec3 barrelID;
+in vec4 pos;
+
+uniform mat4 m_view;
+uniform vec4 light_dir;
+uniform sampler2D diffuseY, diffuseR, diffuseG, diffuseB, diffuseBl, normalMap; 
+
+out vec4 color;
+
+float snoise(vec3 p);
+
+void main() {
+  int c = int(snoise(vec3(barrelID)) * 5);
+
+  vec4 cor;
+  if (c == 0) {
+    cor = texture(diffuseY, tc);
+  }
+  else if (c == 1) {
+    cor = texture(diffuseR, tc);
+  }
+  else if (c == 2) {
+    cor = texture(diffuseG, tc);
+  }
+  else if (c == 3) {
+    cor = texture(diffuseB, tc);
+  }
+  else {
+    cor = texture(diffuseBl, tc);
+  }
+
+  vec3 nn = normalize(n);
+  vec3 tt = normalize(t);
+  vec3 b = cross(nn, tt);
+
+  mat3 tbn = mat3(tt, b, nn);
+  nn = texture(normalMap, tc).xyz * 2 - 1;
+  nn = normalize(tbn * nn);
+
+  vec3 ld = normalize(vec3(m_view * light_dir));
+
+  float intensity = max(0.0, dot(nn, ld));
+
+  vec4 specular = vec4(0.0);
+  if (intensity > 0.0) {
+    vec3 h = normalize(ld - normalize(pos.xyz));
+    float shine = max(0, dot(h, nn));
+    specular = vec4(1.0) * pow(shine, 260);
+  }
+
+  color = (intensity + 0.5) * cor + specular;
+}
 
 //---------------------------------------------------------------------------------------
 //

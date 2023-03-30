@@ -1,5 +1,40 @@
-#version 460
+#version 440
 
+in vec4 position, tangent;
+in vec3 normal;
+in vec2 texCoord0;
+
+uniform mat3 m_normal;
+uniform mat4 m_pvm;
+uniform mat4 m_viewModel;
+
+out vec3 n, t;
+out vec2 tc;
+out flat ivec3 barrelID;
+out vec4 pos;
+
+void main() {
+
+  int index = gl_InstanceID;
+  int h = index / 10000;
+  index -= h * 10000;
+  int col = index / 10;
+  int row = index % 10;
+
+  barrelID = ivec3(col, h, row);
+
+  vec4 shift = vec4(col * 2 * 0.68, h * 2, row * 2 * 0.663, 0);
+
+  pos = position + shift;
+
+  n = normalize(m_normal * normal);
+  t = vec3(m_viewModel * tangent);
+  tc = texCoord0;
+
+  gl_Position = m_pvm * pos;
+
+  pos = m_viewModel * pos;
+}
 
 
 

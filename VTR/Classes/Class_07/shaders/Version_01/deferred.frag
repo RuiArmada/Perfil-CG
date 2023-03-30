@@ -1,4 +1,61 @@
-#version 460
+#version 440
+
+in vec2 tc;
+
+uniform mat4 m_view;
+uniform vec4 light_dir;
+uniform sampler2D diffuseY, diffuseR, diffuseG, diffuseB, diffuseBl, normalMap, normal, tangent, texCoord, pos; 
+
+out vec4 color;
+
+float snoise(vec3 p);
+
+void main(){
+
+  vec3 nn = texture(normal, tc).xyz * 2 - 1;
+  vec3 tt = texture(tangent, tc).xyz * 2 - 1;
+  vec3 p = texture(pos, tc).xyz * 2 - 1;
+  vec2 tc_obj = texture(texCoord, tc).st;
+
+  int c = int(snoise(vec3(0)) * 5);
+
+  vec4 cor;
+  if (c == 0) {
+    cor = texture(diffuseY, tc_obj);
+  }
+  else if (c == 1) {
+    cor = texture(diffuseR, tc_obj);
+  }
+  else if (c == 2) {
+    cor = texture(diffuseG, tc_obj);
+  }
+  else if (c == 3) {
+    cor = texture(diffuseB, tc_obj);
+  }
+  else {
+    cor = texture(diffuseBl, tc_obj);
+  }
+
+  vec3 b = cross(nn, tt);
+
+  mat3 tbn = mat3(tt, b, nn);
+  nn = texture(normalMap, tc_obj).xyz * 2 - 1;
+  nn = normalize(tbn * nn);
+
+  vec3 ld = normalize(vec3(m_view * light_dir));
+
+  float intensity = max(0.0, dot(nn, ld));
+
+  vec4 specular = vec4(0.0);
+  if (intensity > 0.0) {
+    vec3 h = normalize(ld - normalize(p.xyz));
+    float shine = max(0, dot(h, nn));
+    specular = vec4(1.0) * pow(shine, 260);
+  }
+
+  color = (intensity + 0.5) * cor + specular;
+  
+}
 
 
 //---------------------------------------------------------------------------------------

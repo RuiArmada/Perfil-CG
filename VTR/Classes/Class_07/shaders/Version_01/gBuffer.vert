@@ -1,5 +1,41 @@
 
-#version 460
+#version 440
+
+uniform mat4 m_pvm;
+uniform mat3 m_normal;
+uniform mat4 m_viewModel;
+
+in vec4 position, tangent;
+in vec3 normal;
+in vec2 texCoord0;
+
+out vec4 p;
+out vec3 n, t;
+out vec2 tc;
+
+float snoise(vec3 p);
+
+void main(){
+
+  int index = gl_InstanceID;
+  int h = index / 10000;
+  index -= h * 10000;
+  int col = index / 10;
+  int row = index % 10;
+
+  vec4 shift = vec4(col * 2 * 0.68, h * 2, row * 2 * 0.663, 0);
+
+  p = position + shift;
+  
+  t = vec3(m_viewModel * tangent);
+
+  n = normalize(m_normal * normal);
+
+  tc = texCoord0;
+
+  gl_Position = m_pvm * p;
+
+}
 
 //---------------------------------------------------------------------------------------
 //
@@ -34,7 +70,6 @@ vec4 taylorInvSqrt(vec4 r)
 
 
 float perlinNoise(vec3 pos) {
-
 	return snoise(pos) + 0.5 * snoise(pos*2) + 0.25 * snoise(pos*4);
 }
 
