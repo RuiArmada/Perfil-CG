@@ -1,0 +1,33 @@
+{
+  "title": "Cornell box, static",
+  "model": "models/cornell_box.obj",
+  "width": 1920,
+  "height": 1080,
+  "frames": [
+    {
+      "frame": 0,
+      "camera": {
+        "fov": {
+          "x": 1.047197551,
+          "y": 0.6283185307
+        },
+        "up": {
+          "x": 0,
+          "y": -1,
+          "z": 0
+        },
+        "position": {
+          "x": 200,
+          "y": 200,
+          "z": -800
+        },
+        "lookingAt": {
+          "x": 250,
+          "y": 250,
+          "z": 250
+        }
+      }
+    }
+  ],
+  "output": "out/image.png"
+}
