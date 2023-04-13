@@ -70,10 +70,16 @@
             </pass>
 
             <pass class="quad" name="barrels" >
-                 <COLOR_CLEAR value="false" />
                 <viewport name="MainViewport" />
                 <material name = "deferred" fromLibrary="Texture" />
+				<renderTarget name="color" fromLibrary="Texture" />
             </pass>
+
+			<pass class="quad" name="qwe">
+				<COLOR_CLEAR value="false" />
+				<viewport name="MainViewport" />
+				<material name = "resolve" fromLibrary="Texture" />
+			</pass>
         </pipeline>		
 
 		<pipeline name="normal"  defaultCamera="MainCamera">
@@ -107,7 +113,7 @@
     <interface>
         <window label="settings" >
             <pipelineList label="Pipeline" />
-            <var label="Samples" type="COLOR" context="Texture::resolve" component="Samples" def="min=2 max=32" />
+            <var label="Samples" type="COLOR" context="Texture::resolve" component="Samples" def="min=2 max=8" />
         </window>
     </interface>
 </project>

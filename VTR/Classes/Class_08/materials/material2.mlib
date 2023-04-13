@@ -8,12 +8,12 @@
 	</textures>
 
 	<shaders>
-		<shader name="texturedTS" 		vs = "../shaders/Version_01/textureTS.vert" 
-										ps = "../shaders/Version_01/textureTS.frag" />
-		<shader name="parallax" 		vs = "../shaders/Version_01/parallax.vert" 
-										ps = "../shaders/Version_01/parallax.frag" />
-		<shader name="steepParallax" 	vs = "../shaders/Version_01/steepParallax.vert" 
-										ps = "../shaders/Version_01/steepParallax.frag" />
+		<shader name="texturedTS" 		vs = "../shaders/Version_02/textureTS.vert" 
+										ps = "../shaders/Version_02/textureTS.frag" />
+		<shader name="parallax" 		vs = "../shaders/Version_02/parallax.vert" 
+										ps = "../shaders/Version_02/parallax.frag" />
+		<shader name="steepParallax" 	vs = "../shaders/Version_02/steepParallax.vert" 
+										ps = "../shaders/Version_02/steepParallax.frag" />
 	</shaders>
 	
 	<materials>

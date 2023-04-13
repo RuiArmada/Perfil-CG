@@ -3,3 +3,4 @@
 *.ini
 *.3ds
 testing/
+.vscode/

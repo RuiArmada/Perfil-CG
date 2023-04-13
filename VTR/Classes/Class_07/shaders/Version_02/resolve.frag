@@ -2,7 +2,7 @@
 
 uniform sampler2DMS texUnit;
 uniform sampler2D texNormal;
-uniform int samples = 32;
+uniform int samples = 8;
 uniform vec2 vp_dim;
 
 in Data {

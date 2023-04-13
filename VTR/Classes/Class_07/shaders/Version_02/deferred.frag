@@ -15,8 +15,65 @@ float perlinNoise(vec3 pos);
 
 void main() {
 
+    vec3 n = texture(normal, tc).xyz;
 
-    color = vec4(1,1,1,1);
+    if(n == vec3(0, 0, 0))
+      discard;
+
+    n = normalize(n * 2 - 1);
+
+    vec3 t = normalize(texture(tangent, tc).xyz * 2 - 1);
+
+    vec4 p = texture(pos, tc);
+
+    vec2 tc_obj = texture(texCoord, tc).st;
+
+    vec3 b = normalize(cross(n, t));
+
+    mat3 tbn = mat3(t, b, n);
+
+    vec3 nts = texture(normalMap, tc_obj).xyz * 2 - 1;
+
+    n = normalize(tbn * nts);
+
+    vec3 ldn = normalize(ld);
+
+    float intensity = max(0.0, dot(n, ldn));
+
+    vec4 specular = vec4(0);
+
+    vec4 r = texture(rust, tc);
+
+    float rand = perlinNoise(p.xyz);
+
+    float f = smoothstep(0.4, 0.45, rand);
+
+    vec4 pos_cam = m_view * vec4(p.xyz, 1);
+
+    if(intensity > 0 && rand < 0.4){
+      vec3 h = normalize(ldn + normalize(-pos_cam.xyz));
+      float specInt = max(0.0, dot(h,n));
+      vec4 specMap = texture(specularMap, tc_obj);
+      specular = specMap * pow(specInt, 80);
+    }
+
+    int cr = int(p.w);
+
+    vec4 c;
+    if(cr == 0)
+      c = texture(diffuseY, tc_obj);
+    else if(cr == 1)
+      c = texture(diffuseR, tc_obj);
+    else if(cr == 2)
+      c = texture(diffuseG, tc_obj);
+    else if(cr == 3)
+      c = texture(diffuseB, tc_obj);
+    else
+      c = texture(diffuseBl, tc_obj);
+
+    c = mix(c, r, f);
+
+    color = c * 0.5 + intensity * c + specular;
 }
 
 
