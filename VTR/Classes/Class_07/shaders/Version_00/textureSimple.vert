@@ -1,4 +1,4 @@
-#version 330
+#version 440
 
 // the matrices
 uniform	mat4 m_pvm;

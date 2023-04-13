@@ -1,0 +1,113 @@
+<?xml version="1.0" ?>
+<project name="Normal Mapping - Deferred" width="512" height="512">
+	<assets>
+
+        <attributes>
+            <attribute name="Samples" type = "COLOR" data="INT" value="2" />
+        </attributes>
+		<scenes>
+			<scene name="Barrel" param="UNITIZE">
+				<TRANSLATE x="0" y="1" z= "0" />
+				<file name="../assets/metal_barrel.obj"/>
+			</scene>
+			<scene name="Plane" >
+				<SCALE x="200" y="200" z="200" />
+				<file name="../assets/plane.obj"/>
+			</scene>
+		</scenes>
+		
+		<viewports>
+			<viewport name="MainViewport">
+				<CLEAR_COLOR r="1.0" g="1.0" b="1.0" />
+			</viewport>
+		</viewports>
+		
+		<cameras>
+			<camera name="MainCamera" >
+				<viewport name="MainViewport" />
+                <POSITION x="150" y="12.6437" z="67.9942" w="1" />
+                <VIEW x="-0.977805" y="-0.209222" z="0.0111561" w="0" />
+			</camera>
+	</cameras>
+		
+		<lights>
+			<light name="Sun">
+				<DIRECTION x="-2" y="-2" z="-2" />
+			</light>
+		</lights>
+		
+		<materialLibs>
+			<materialLib filename="../materials/material3.mlib" />
+		</materialLibs>
+	</assets>
+	
+	<pipelines>
+	
+
+
+		<pipeline name="deferred"  defaultCamera="MainCamera">
+			<pass class="default" name="plane" >
+				<scenes>
+					<scene name="Plane" />
+				</scenes>
+				<camera name="MainCamera" />
+				<lights>
+					<light name="Sun" />
+				</lights>
+			</pass>
+
+            <pass class="default" name="gbuffer" >
+				<scenes instances = "30000">
+					<scene name="Barrel" />
+				</scenes>
+				<camera name="MainCamera" />
+                <materialMaps>
+                    <map fromMaterial="*"
+                        toMaterial = "gBuffer" toLibrary = "Texture" />
+                </materialMaps>
+                <viewport name="MainViewport" />
+                <renderTarget name="gBuffer" fromLibrary="Texture" />
+            </pass>
+
+            <pass class="quad" name="barrels" >
+                 <COLOR_CLEAR value="false" />
+                <viewport name="MainViewport" />
+                <material name = "deferred" fromLibrary="Texture" />
+            </pass>
+        </pipeline>		
+
+		<pipeline name="normal"  defaultCamera="MainCamera">
+			<pass class="default" name="plane" >
+				<scenes>
+					<scene name="Plane" />
+				</scenes>
+				<camera name="MainCamera" />
+				<lights>
+					<light name="Sun" />
+				</lights>
+			</pass>
+
+            <pass class="default" name="gbuffer" >
+                 <COLOR_CLEAR value="false" />
+				<scenes instances = "30000">
+					<scene name="Barrel" />
+				</scenes>
+				<camera name="MainCamera" />
+				<lights>
+					<light name="Sun" />
+				</lights>
+                <materialMaps>
+                    <map fromMaterial="*"
+                        toMaterial = "barrels" toLibrary = "Texture" />
+                </materialMaps>
+            </pass>
+        </pipeline>		
+	</pipelines>
+
+    <interface>
+        <window label="settings" >
+            <pipelineList label="Pipeline" />
+            <var label="Samples" type="COLOR" context="Texture::resolve" component="Samples" def="min=2 max=32" />
+        </window>
+    </interface>
+</project>

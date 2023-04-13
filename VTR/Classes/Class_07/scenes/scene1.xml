@@ -1,17 +1,16 @@
 <?xml version="1.0" ?>
-<project name="Normal Mapping - Deferred" width="512" height="512">
+<project name="Barrel" width="512" height="512">
 	<assets>
-
-        <attributes>
-            <attribute name="Samples" type = "COLOR" data="INT" value="2" />
-        </attributes>
+		<attributes>
+			<attribute type="RENDERER" name="rusting" data="FLOAT" value="1.0"/>
+		</attributes>
 		<scenes>
 			<scene name="Barrel" param="UNITIZE">
 				<TRANSLATE x="0" y="1" z= "0" />
 				<file name="../assets/metal_barrel.obj"/>
 			</scene>
 			<scene name="Plane" >
-				<SCALE x="200" y="200" z="200" />
+				<SCALE x="100" y="100" z="100" />
 				<file name="../assets/plane.obj"/>
 			</scene>
 		</scenes>
@@ -25,10 +24,12 @@
 		<cameras>
 			<camera name="MainCamera" >
 				<viewport name="MainViewport" />
-                <POSITION x="127.013" y="3.562" z="-8.894" w="1" />
-                <VIEW x="0.267" y="-0.041" z="0.963" w="0" />
+				<NEAR value= "0.1" />
+				<FAR value="100" />
+                <POSITION x="1.90969" y="2.85184" z="1.74903" w="1" />
+                <VIEW x="-0.583466" y="-0.589145" z="-0.558995" w="0" />
 			</camera>
-	</cameras>
+		</cameras>
 		
 		<lights>
 			<light name="Sun">
@@ -37,78 +38,101 @@
 		</lights>
 		
 		<materialLibs>
-			<materialLib filename="../materials/material.mlib" />
+			<materialLib filename="../materials/material1.mlib" />
 		</materialLibs>
 	</assets>
-
-	<!--<pass class="default" name="plane">
-		<scenes>
-			<scene name="Plane"/>
-		</scenes>
-		<camera name="MainCamera" />
-		<lights>
-			<light name="Sun" />
-		</lights>
-	</pass>
-
-	<pass class="default" name="barrel">
-		<COLOR_CLEAR value="false"/>
-		<scenes instances="30000">
-			<scene name="Barrel"/>
-		</scenes>
-		<camera name="MainCamera" />
-		<lights>
-			<light name="Sun" />
-		</lights>
-		<materialMaps>
-			<map fromMaterial="*"
-					toMaterial="barrels" toLibrary="Texture"/>
-		</materialMaps>
-	</pass>  -->
 	
 	<pipelines>
-
-		<pipeline name="barrelsdefMS"  defaultCamera="MainCamera" >
-
- 			<pass class="default" name="plane">
+	
+		<pipeline name="model">
+			<pass class="default" name="geometry" >
 				<scenes>
-					<scene name="Plane"/>
+					<scene name="Barrel" />
+					<scene name="Plane" />
 				</scenes>
 				<camera name="MainCamera" />
 				<lights>
 					<light name="Sun" />
 				</lights>
 			</pass>
-
-			<pass class="default" name="barrel">
-				<COLOR_CLEAR value="false"/>
-				<scenes instances="30000">
-					<scene name="Barrel"/>
+		</pipeline>
+				
+		<pipeline name="textured">
+			<pass class="default" name="geometry" >
+				<scenes>
+					<scene name="Barrel" />
+					<scene name="Plane" />
 				</scenes>
 				<camera name="MainCamera" />
 				<lights>
 					<light name="Sun" />
 				</lights>
 				<materialMaps>
-					<map fromMaterial="*"
-							toMaterial="gBuffer" toLibrary="Texture"/>
+					<map fromMaterial="DefaultOBJMaterial" 
+						 toMaterial="textured" toLibrary="Texture" />
 				</materialMaps>
-				<viewport name="MainViewport"/>
-				<renderTarget name="gBuffer" fromLibrary="Texture"/>
 			</pass>
-
-			<pass name="show" class="quad">
-				<material name="deferred" fromLibrary="Texture"/>
-				<viewport name="MainViewport"/>
+		</pipeline>
+		
+		<pipeline name="normal mapping in TS">
+			<pass class="default" name="tangent space" >
+				<scenes>
+					<scene name="Barrel" />
+					<scene name="Plane" />
+				</scenes>
+				<camera name="MainCamera" />
+				<lights>
+					<light name="Sun" />
+				</lights>
+				<materialMaps>
+					<map fromMaterial="DefaultOBJMaterial" 
+						 toMaterial="texturedTS" toLibrary="Texture" />
+				</materialMaps>
 			</pass>
+		</pipeline>
 
-        </pipeline>		
+		<pipeline name="nm per pixel in TS">
+			<pass class="default" name="tangent space" >
+				<scenes>
+					<scene name="Barrel" />
+					<scene name="Plane" />
+				</scenes>
+				<camera name="MainCamera" />
+				<lights>
+					<light name="Sun" />
+				</lights>
+				<materialMaps>
+					<map fromMaterial="DefaultOBJMaterial" 
+						 toMaterial="texturedTS_perpixel" toLibrary="Texture" />
+				</materialMaps>
+			</pass>
+		</pipeline>
+
+		<pipeline name="normal mapping in CS">
+			<pass class="default" name="tangent space" >
+				<scenes>
+					<scene name="Barrel" />
+					<scene name="Plane" />
+				</scenes>
+				<camera name="MainCamera" />
+				<lights>
+					<light name="Sun" />
+				</lights>
+				<materialMaps>
+					<map fromMaterial="DefaultOBJMaterial" 
+						 toMaterial="texturedCS" toLibrary="Texture" />
+				</materialMaps>
+			</pass>
+		</pipeline>
+
 	</pipelines>
-    <interface>
-        <window label="settings" >
-            <pipelineList label="Pipeline" />
-            <var label="Samples" type="COLOR" context="Texture::resolve" component="Samples" def="min=2 max=32" />
-        </window>
-    </interface>
-
+	
+	<interface>
+		<window label="settings" >
+			<pipelineList label="effect" />
+			<var label="rusting" type="RENDERER" context="CURRENT" 
+					component="rusting" def="step=0.01 min=-0.5 max=1.0" />
+		</window>
+	</interface>
+	
 </project>

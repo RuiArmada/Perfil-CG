@@ -2,257 +2,255 @@
 <materialLib name="Texture">
 
 	<textures>
-		<texture name="normal_nobumps" 
-			filename="../textures/metal_barrel/normal_no_bumps.png" mipmap="true" />
-		<texture name="diffuseY" 
-			filename="../textures/metal_barrel/diffus_yellow.png" mipmap="true" />
-		<texture name="specularMap" 
-			filename="../textures/metal_barrel/specular_stainless_steel.png" mipmap="true" />
-		<texture name="rust" 
-			filename="../textures/metal_barrel/diffus_rust.png" mipmap="true" />
-		<texture name="noise" 
-			filename="../textures/fractalNoise.jpg" mipmap="true" />
+		<texture name="diffuseY" filename="../textures/metal_barrel/diffus_yellow.png" mipmap="true" />
+		<texture name="diffuseB" filename="../textures/metal_barrel/diffus_blue.png" mipmap="true" />
+		<texture name="diffuseG" filename="../textures/metal_barrel/diffus_green.png" mipmap="true" />
+		<texture name="diffuseR" filename="../textures/metal_barrel/diffus_red.png" mipmap="true" />
+		<texture name="diffuseBl" filename="../textures/metal_barrel/diffus_black.png" mipmap="true" />
+		<texture name="normalMap" filename="../textures/metal_barrel/normal_hard_bumps.png" mipmap="true" />
+		<texture name="specularMap" filename="../textures/metal_barrel/specular_stainless_steel.png" mipmap="true" />
+		<texture name="rust" filename="../textures/metal_barrel/diffus_rust.png" mipmap="true" />
+		<texture name="noise" filename="../textures/fractalNoise.jpg" mipmap="true" />
 	</textures>
 
 	<shaders>
-		<shader name="textured" 	vs = "../shaders/Version_00/textureSimple.vert" 
-									ps = "../shaders/Version_00/textureSimple.frag" />
-		<shader name="texturedTS" 	vs = "../shaders/Version_00/textureTS.vert" 
-									ps = "../shaders/Version_00/textureTS.frag" />
-		<shader name="texturedCS" 	vs = "../shaders/Version_00/textureCS.vert" 
-									ps = "../shaders/Version_00/textureCS.frag" />
-		<shader name="texturedTS_perpixel" 	vs = "../shaders/Version_00/textureTS_perpixel.vert" 
-											ps = "../shaders/Version_00/textureTS_perpixel.frag" />
+		<shader name="deferred" 	vs = "../shaders/Version_01/deferred.vert" 
+									ps = "../shaders/Version_01/deferred.frag" />
+		<shader name="gBuffer" 		vs = "../shaders/Version_01/gBuffer.vert" 
+									ps = "../shaders/Version_01/gBuffer.frag" />
+		<shader name="resolveMS" 		ps="../shaders/Version_01/resolve.frag" 
+										vs="../shaders/Version_01/resolve.vert" />
+
+        <shader name="barrels"      vs="../shaders/Version_01/barrels.vert"
+                                    ps="../shaders/Version_01/barrels.frag" />
+
 	</shaders>
 	
+	<renderTargets>
+		<renderTarget name = "gBuffer" >
+			<SIZE width="512" height="512"/>
+			<CLEAR_VALUES r="0.0" g="0.0" b="0.0" a="0.0"/>
+			<colors>
+				<color name="normal" internalFormat="RGBA"  />
+				<color name="tangent" internalFormat="RGBA"  />
+				<color name="texCoord" internalFormat="RG32F"  />
+				<color name="pos" internalFormat="RGBA32F"  />
+			</colors>	
+		</renderTarget>
+
+		<renderTarget name = "color" >
+			<SIZE width="512" height="512"/>
+			<CLEAR_VALUES r="0.0" g="0.0" b="0.0" a="0.0"/>
+            <SAMPLES value="8" />
+			<colors>
+				<color name="color" internalFormat="RGBA"  />
+			</colors>
+			<depth name="depthMap2" internalFormat="DEPTH_COMPONENT32F"  />
+		</renderTarget>
+	</renderTargets>
+	
 	<materials>
-		<material name="textured">
-			<shader name="textured">
-				<values>
-					<valueof uniform="m_pvm" 
-							 type="RENDERER" context="CURRENT" 
-							 component="PROJECTION_VIEW_MODEL" />
-					 			 
+
+        <material name="barrels" >
+            <shader name= "barrels">
+                <values>
+                    <valueof uniform="m_pvm" 
+                            type="RENDERER" 
+                            component="PROJECTION_VIEW_MODEL" />
+
+					<valueof uniform="light_dir"
+							 type="LIGHT" 
+							 component="DIRECTION" id="0"/>
+
 					<valueof uniform="m_viewModel" 
-							 type="RENDERER" context="CURRENT" 
+							 type="RENDERER" 
 							 component="VIEW_MODEL" />
 					 
 					<valueof uniform="m_view" 
-							 type="RENDERER" context="CURRENT" 
+							 type="RENDERER" 
 							 component="VIEW" />
 					 
 					<valueof uniform="m_normal" 
-							 type="RENDERER" context="CURRENT" 
+							 type="RENDERER" 
 							 component="NORMAL" />
-					 
-					<valueof uniform="rusting"
-							 type="RENDERER" context="CURRENT" 
-							 component="rusting" />
+					<valueof uniform="m_model" 
+							 type="RENDERER" 
+							 component="MODEL" />
 
-							 <valueof uniform="l_dir"
-							 type="LIGHT" context="CURRENT" 
-							 component="DIRECTION" id="0"/>
+					<valueof uniform="diffuseY"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="0" />
+
+					<valueof uniform="diffuseB"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="1" />
+
+					<valueof uniform="diffuseG"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="2" />
+
+					<valueof uniform="diffuseR"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="3" />
+
+					<valueof uniform="diffuseBl"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="4" />
+
+					<valueof uniform="rust"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="5" />
+
+					<valueof uniform="normalMap"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="8" />
+
+					<valueof uniform="specularMap"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="9" />
+                 </values>
+            </shader>
+			<textures>
+				<texture name="diffuseY" UNIT = "0" />
+				<texture name="diffuseB" UNIT = "1" />
+				<texture name="diffuseG" UNIT = "2" />
+				<texture name="diffuseR" UNIT = "3" />
+				<texture name="diffuseBl" UNIT = "4" />
+				<texture name="rust" UNIT = "5" />
+				<texture name="normalMap" UNIT = "8" />
+				<texture name="specularMap" UNIT = "9" />
+			</textures>
+        </material>
+
+		<material name="resolve">
+			<color>
+				<AMBIENT r="0.0" g="0.0" b="0.0" a="1.0" />
+				<DIFFUSE r="1.0" g="1.0" b="1.0" a="1.0" />
+				<SPECULAR r="0.0" g="0.0" b="0.0" a="1.0" />
+				<EMISSION r="0.0" g="0.0" b="0.0" a="1.0" />
+				<SHININESS value="0.0" />
+			</color>
+			<shader name="resolveMS">
+				<values>
+					<valueof uniform="texUnit"		type="TEXTURE_BINDING"  
+														component="UNIT" id="0" />		
+					<valueof uniform="texNormal"	type="TEXTURE_BINDING"  
+														component="UNIT" id="1" />		
+                    <valueof uniform="vp_dim"       type="VIEWPORT" component="ABSOLUTE_SIZE" />
+
+                    <valueof uniform="samples"      type="COLOR" component="Samples" />
+				</values>
+			</shader>
+			<textures>
+				<texture UNIT="0" name="color" />
+				<texture UNIT="1" name="normal" />
+			</textures>			
+		</material>
+
+	
+		<material name="deferred" >
+			<shader name="deferred">
+				<values>
+					<valueof uniform="m_view" 
+							 type="CAMERA" context="MainCamera" 
+							 component="VIEW_MATRIX" />
+					 
+					<valueof uniform="light_dir"
+							 type="LIGHT" context="Sun" 
+							 component="DIRECTION"/>
 					 
 					<valueof uniform="diffuseY"
-							 type="TEXTURE_BINDING" context="CURRENT"
+							 type="TEXTURE_BINDING" 
 							 component="UNIT" id="0" />
 
-					<valueof uniform="noise"
-							 type="TEXTURE_BINDING" context="CURRENT"
+					<valueof uniform="diffuseB"
+							 type="TEXTURE_BINDING" 
 							 component="UNIT" id="1" />
 
-					<valueof uniform="specularMap"
-							 type="TEXTURE_BINDING" context="CURRENT"
+					<valueof uniform="diffuseG"
+							 type="TEXTURE_BINDING" 
 							 component="UNIT" id="2" />
 
-					<valueof uniform="rust"
-							 type="TEXTURE_BINDING" context="CURRENT"
+					<valueof uniform="diffuseR"
+							 type="TEXTURE_BINDING" 
 							 component="UNIT" id="3" />
+
+					<valueof uniform="diffuseBl"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="4" />
+
+					<valueof uniform="rust"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="5" />
+
+					<valueof uniform="texCoord"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="6" />
+
+					<valueof uniform="pos"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="7" />
+
+					<valueof uniform="normalMap"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="8" />
+
+					<valueof uniform="specularMap"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="9" />
+
+					<valueof uniform="normal"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="10" />
+
+					<valueof uniform="tangent"
+							 type="TEXTURE_BINDING" 
+							 component="UNIT" id="11" />
 
 				 </values>
 			</shader>
 			<textures>
 				<texture name="diffuseY" UNIT = "0" />
-				<texture name="noise" UNIT = "1" />
-				<texture name="specularMap" UNIT = "2" />
-				<texture name="rust" UNIT = "3" />
+				<texture name="diffuseB" UNIT = "1" />
+				<texture name="diffuseG" UNIT = "2" />
+				<texture name="diffuseR" UNIT = "3" />
+				<texture name="diffuseBl" UNIT = "4" />
+				<texture name="rust" UNIT = "5" />
+				<texture name="texCoord" UNIT = "6" >
+                    <MAG_FILTER value="NEAREST" />
+                    <MIN_FILTER value="NEAREST" />
+                </texture> 
+				<texture name="pos" UNIT = "7" />
+				<texture name="normalMap" UNIT = "8" />
+				<texture name="specularMap" UNIT = "9" />
+				<texture name="normal" UNIT = "10" />
+                <texture name="tangent" UNIT = "11" />
 			</textures>
 		</material>
-
-
-		<material name="texturedTS">
-			<shader name="texturedTS">
+	
+		<material name="gBuffer">
+			<shader name="gBuffer">
 				<values>
 					<valueof uniform="m_pvm" 
-							 type="RENDERER" context="CURRENT" 
+							 type="RENDERER" 
 							 component="PROJECTION_VIEW_MODEL" />
 					 			 
 					<valueof uniform="m_viewModel" 
-							 type="RENDERER" context="CURRENT" 
+							 type="RENDERER" 
 							 component="VIEW_MODEL" />
 					 
-					<valueof uniform="m_view" 
-							 type="RENDERER" context="CURRENT" 
-							 component="VIEW" />
+					<valueof uniform="m_model" 
+							 type="RENDERER" 
+							 component="MODEL" />
 					 
 					<valueof uniform="m_normal" 
-							 type="RENDERER" context="CURRENT" 
+							 type="RENDERER" 
 							 component="NORMAL" />
 					 
-					<valueof uniform="l_dir"
-							 type="LIGHT" context="CURRENT" 
-							 component="DIRECTION" id="0"/>
-					 
-					<valueof uniform="rusting"
-							 type="RENDERER" context="CURRENT" 
-							 component="rusting" />
-
-					<valueof uniform="diffuse"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="0" />
-
-					<valueof uniform="normalMap"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="1" />
-
-					<valueof uniform="specularMap"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="2" />
-
-					<valueof uniform="rust"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="3" />
-
-					<valueof uniform="noise"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="4" />
-
 				 </values>
 			</shader>
-			<textures>
-				<texture name="diffuseY" UNIT = "0" />
-				<texture name="normal_nobumps" UNIT = "1" />
-				<texture name="specularMap" UNIT = "2" />
-				<texture name="rust" UNIT = "3" />
-				<texture name="noise" UNIT = "4" />
-			</textures>
 		</material>
 
-		<material name="texturedCS">
-			<shader name="texturedCS">
-				<values>
-					<valueof uniform="m_pvm" 
-							 type="RENDERER" context="CURRENT" 
-							 component="PROJECTION_VIEW_MODEL" />
-					 			 
-					<valueof uniform="m_viewModel" 
-							 type="RENDERER" context="CURRENT" 
-							 component="VIEW_MODEL" />
-					 
-					<valueof uniform="m_view" 
-							 type="RENDERER" context="CURRENT" 
-							 component="VIEW" />
-					 
-					<valueof uniform="m_normal" 
-							 type="RENDERER" context="CURRENT" 
-							 component="NORMAL" />
-					 
-					<valueof uniform="l_dir"
-							 type="LIGHT" context="CURRENT" 
-							 component="DIRECTION" id="0"/>
-					 
-					<valueof uniform="rusting"
-							 type="RENDERER" context="CURRENT" 
-							 component="rusting" />
-
-					<valueof uniform="diffuse"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="0" />
-
-					<valueof uniform="normalMap"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="1" />
-
-					<valueof uniform="specularMap"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="2" />
-
-					<valueof uniform="rust"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="3" />
-
-					<valueof uniform="noise"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="4" />
-
-				 </values>
-			</shader>
-			<textures>
-				<texture name="diffuseY" UNIT = "0" />
-				<texture name="normal_nobumps" UNIT = "1" />
-				<texture name="specularMap" UNIT = "2" />
-				<texture name="rust" UNIT = "3" />
-				<texture name="noise" UNIT = "4" />
-			</textures>
-		</material>
-
-		<material name="texturedTS_perpixel">
-			<shader name="texturedTS_perpixel">
-				<values>
-					<valueof uniform="m_pvm" 
-							 type="RENDERER" context="CURRENT" 
-							 component="PROJECTION_VIEW_MODEL" />
-					 			 
-					<valueof uniform="m_viewModel" 
-							 type="RENDERER" context="CURRENT" 
-							 component="VIEW_MODEL" />
-					 
-					<valueof uniform="m_view" 
-							 type="RENDERER" context="CURRENT" 
-							 component="VIEW" />
-					 
-					<valueof uniform="m_normal" 
-							 type="RENDERER" context="CURRENT" 
-							 component="NORMAL" />
-					 
-					<valueof uniform="l_dir"
-							 type="LIGHT" context="CURRENT" 
-							 component="DIRECTION" id="0"/>
-					 
-					<valueof uniform="rusting"
-							 type="RENDERER" context="CURRENT" 
-							 component="rusting" />
-
-					<valueof uniform="diffuse"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="0" />
-
-					<valueof uniform="normalMap"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="1" />
-
-					<valueof uniform="specularMap"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="2" />
-
-					<valueof uniform="rust"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="3" />
-
-					<valueof uniform="noise"
-							 type="TEXTURE_BINDING" context="CURRENT"
-							 component="UNIT" id="4" />
-
-				 </values>
-			</shader>
-			<textures>
-				<texture name="diffuseY" UNIT = "0" />
-				<texture name="normal_nobumps" UNIT = "1" />
-				<texture name="specularMap" UNIT = "2" />
-				<texture name="rust" UNIT = "3" />
-				<texture name="noise" UNIT = "4" />
-			</textures>
-		</material>
 	</materials>
 	
 </materialLib>
