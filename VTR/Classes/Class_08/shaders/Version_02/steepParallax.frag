@@ -16,5 +16,30 @@ out vec4 colorOut;
 
 void main() {
 
-    colorOut = vec4(0,1,0,0);
+    float height = 1;
+    float intensity = 0;
+    float h = texture(normalMap, tc).a;
+
+    vec3 eye_n = normalize(eye);
+    vec3 ld_n = normalize(ld);
+
+    float step = 1.0/linSteps;
+
+    vec2 delta = bumpScale * eye_n.xy * step / abs(eye_n.z);
+
+    vec2 offset = tc;
+
+    while(h < height){
+        height -= step;
+        offset += delta;
+        h = texture(normalMap, offset).a;
+    }
+
+    vec4 color = texture(diffuse, offset);
+
+    vec3 n = texture(normalMap, offset).xyz * 2.0 - 1.0;
+
+    intensity = max(0.0, dot(n, normalize(ld)));
+
+    colorOut = (intensity + 0.4) * color;
 }

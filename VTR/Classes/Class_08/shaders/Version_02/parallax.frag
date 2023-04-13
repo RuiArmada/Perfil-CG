@@ -10,6 +10,19 @@ out vec4 colorOut;
 
 void main() {
 
+	float h = texture(normalMap, tc).a;
 
-	colorOut = vec4(1,0,0,0);
+	float disp = (1 - h) * scale + bias;
+
+	vec3 eye_n = normalize(eye);
+
+	vec2 texCoord = tc + disp * eye_n.xy / abs(eye_n.z);
+
+	vec3 n = texture(normalMap, texCoord).rgb * 2.0 - 1.0;
+
+	n = normalize(n);
+
+	float intensity = max(0.0, dot(n, normalize(ld)));
+
+	colorOut = texture(diffuse, texCoord) * intensity;
 }

@@ -14,6 +14,7 @@ in vec2 texCoord0;
 
 // the data to be sent to the fragment shader
 out vec3 ld; // tangent space
+out vec3 eye; 
 out vec2 tc;
 
 void main () {
@@ -30,6 +31,11 @@ void main () {
 	
     // transform light to tangent space
     ld = tbn_trans * vec3(-m_view * l_dir); 
+
+	// eye vector is vector from eye to vertex 
+    // eye vector = vertex pos - camera pos (all in camera space)
+    // eye vector = VM * pos - (0,0,0) 
+	eye = tbn_trans * vec3(m_viewModel * position);
 
 	gl_Position = m_pvm * position;	
 }
