@@ -4,3 +4,7 @@
 *.3ds
 testing/
 .vscode/
+log*/
+*.data*
+*.index
+checkpoint
