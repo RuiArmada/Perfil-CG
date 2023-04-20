@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<materialLib name="Geometry With Adjacency">
+
+
+	<shaders>
+		<shader name="geomAdj" 		ps="../shaders/Version_01/fragment.frag" 
+									gs="../shaders/Version_01/geometry.geom"
+									vs="../shaders/Version_01/vertex.vert" />
+	</shaders>
+
+	<materials>
+		<material name="showContours">
+			<shader name="geomAdj">
+				<values>
+					<valueof uniform="PVM"          	type="RENDERER" context="CURRENT" 
+														component="PROJECTION_VIEW_MODEL" />
+
+				</values>
+			</shader>
+		</material>
+	</materials>
+</materialLib>
