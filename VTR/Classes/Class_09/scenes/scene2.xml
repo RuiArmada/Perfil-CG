@@ -17,8 +17,8 @@
 			<camera name="MainCamera">
 				<viewport name="MainViewport" />
 				<projection TYPE="PERSPECTIVE" FOV="60.0" NEAR="1.0" FAR="1000.0" />
-				<POSITION x="-240.0" y="180.0" z="-330" />
-				<VIEW x="0.54" y="-0.37" z="0.75" />
+				<POSITION x="2.854" y="79.973" z="-72.129" />
+				<VIEW x="-0.070" y="-0.372" z="0.926" />
 				<UP x="0.0" y="1.0" z="0.0" />
 			</camera>
 		</cameras>
