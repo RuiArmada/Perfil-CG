@@ -9,3 +9,6 @@ log*/
 *.index
 *.png
 checkpoint
+val*/
+*_log/
+img1

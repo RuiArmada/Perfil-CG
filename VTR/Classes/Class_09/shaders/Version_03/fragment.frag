@@ -1,6 +1,6 @@
-#version 420
+#version 440
 
-uniform	vec4 diffuse = vec4(1.0);;
+uniform	vec4 diffuse = vec4(1.0);
 
 in Data {
 	vec3 normal;

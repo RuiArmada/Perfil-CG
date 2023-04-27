@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<materialLib name="tessellation">
+
+	<shaders>
+									
+		<shader name="phongTess" 	ps="../shaders/Version_01/light.frag" 
+									tc="../shaders/Version_01/phongTess.tesc"
+									te="../shaders/Version_01/phongTess.tese"
+									vs="../shaders/Version_01/pn.vert" />
+	</shaders>
+	
+	
+	<materials>
+		<material name="phongTess">
+			<shader name="phongTess">
+				<values>
+					<valueof uniform="diffuse" 		type="COLOR" context="CURRENT" 
+														component="DIFFUSE" /> 
+														
+					<valueof uniform="lightDir" 	type="LIGHT" context="CURRENT" 
+														id="0" component="DIRECTION" /> 
+														
+					<valueof uniform="normalMatrix" type="RENDERER" context="CURRENT" 
+														component="NORMAL" />
+					
+					<valueof uniform="viewMatrix" 	type="RENDERER" context="CURRENT" 
+														component="VIEW" />
+					
+					<valueof uniform="projViewModelMatrix"          	
+													type="RENDERER" context="CURRENT" 
+														component="PROJECTION_VIEW_MODEL" />
+						
+					<valueof uniform="olevel" 		type="RENDERER" context="CURRENT" 
+														component="level"  />
+														
+					<valueof uniform="ilevel" 		type="RENDERER" context="CURRENT" 
+														component="level"  />
+
+					<valueof uniform="alpha"		type="RENDERER" context="CURRENT"
+														component="alpha"	/>													
+				</values>
+			</shader>
+		</material>		
+	</materials>
+</materialLib>
