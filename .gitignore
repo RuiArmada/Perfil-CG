@@ -4,12 +4,4 @@
 *.3ds
 testing/
 .vscode/
-log*/
-*.data*
-*.index
-*.png
-checkpoint
-val*/
-*_log/
-img1
 VCPI/Classes/*/
