@@ -1,4 +1,4 @@
-#version 410
+#version 440
 
 uniform	mat4 viewMatrix;
 uniform vec4 lightDir;
