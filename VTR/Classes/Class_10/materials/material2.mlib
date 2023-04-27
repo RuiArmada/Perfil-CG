@@ -3,10 +3,10 @@
 
 	<shaders>
 									
-		<shader name="phongTess" 	ps="../shaders/Version_03/light.frag" 
-									tc="../shaders/Version_03/phongTess.tesc"
-									te="../shaders/Version_03/phongTess.tese"
-									vs="../shaders/Version_03/pn.vert" />
+		<shader name="phongTess" 	ps="../shaders/Version_02/light.frag" 
+									tc="../shaders/Version_02/phongTess.tesc"
+									te="../shaders/Version_02/phongTess.tese"
+									vs="../shaders/Version_02/pn.vert" />
 	</shaders>
 	
 	

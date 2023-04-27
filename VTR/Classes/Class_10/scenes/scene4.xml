@@ -35,7 +35,7 @@
 		</lights>
 		
 		<materialLibs>
-			<materialLib filename="../materials/material3.mlib"/>
+			<materialLib filename="../materials/material2.mlib"/>
 		</materialLibs>
 		
 	</assets>
