@@ -20,6 +20,7 @@ void main() {
 		gl_TessLevelOuter[0] = olevel;
 		gl_TessLevelOuter[1] = olevel;
 		gl_TessLevelOuter[2] = olevel;
+		
 		gl_TessLevelInner[0] = ilevel;
 	}
 }

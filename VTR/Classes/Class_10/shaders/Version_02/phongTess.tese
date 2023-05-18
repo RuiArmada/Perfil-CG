@@ -20,8 +20,16 @@ void main() {
 	float v = gl_TessCoord.y;
 	float w = gl_TessCoord.z;
 
+	vec4 b300 = posTC[0];
+	vec4 b030 = posTC[1];
+	vec4 b003 = posTC[2];
+	vec4 n1 = normalTC[0];
+	vec4 n2 = normalTC[1];
+	vec4 n3 = normalTC[2];
+
 	// compute normal as the weighted average of the normals for each vertex
-	vec3 normalTE = ...;
+	vec3 normalTE = normalize(vec3(n1 *w*w + n2 *u*u + n3 *v*v +
+				n110 *w*u + n011 * u*v + n101 * w*v));
 
 	// compute point as weighted average of triangle vertices
 	vec4 P = ...;
