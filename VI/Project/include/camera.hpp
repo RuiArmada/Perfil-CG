@@ -22,7 +22,7 @@ public:
   Camera(uint32_t width, uint32_t height, double angle_x, double angle_y,
          vec3 up, vec3 pos, vec3 lookingAt);
 
-  glm::vec3 getRay(uint32_t x, uint32_t y) const;
+  glm::vec3 getRay(uint32_t x, uint32_t y, vec2 jitter) const;
 
   void render();
   vec3 pos{};

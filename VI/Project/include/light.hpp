@@ -1,34 +1,52 @@
 #pragma once
 
+#include "geometry.hpp"
+#include <glm/glm.hpp>
+#include <memory>
 #include <tiny_obj_loader.h>
 #include <vector>
-#include <glm/glm.hpp>
 
-enum LightType { AMBIENT, UNDEFINED };
+using namespace glm;
+
+enum LightType { AMBIENT, POINT, AREA, UNDEFINED };
 
 class Light {
 public:
   Light() = default;
-  ~Light() = default;
+  virtual ~Light() = default;
 
-  glm::vec3 rgb;
+  vec3 rgb{};
 
-  /**
-   * Returns the color of the point as affected by this light source
-   */
-  virtual glm::vec3 light(tinyobj::attrib_t attributes,
-                                   tinyobj::material_t material);
-  virtual glm::vec3 light();
-  virtual LightType lightType();
+  [[nodiscard]] virtual LightType lightType() const;
 };
 
 class AmbientLight : public Light {
 public:
-  AmbientLight() = default;
-  ~AmbientLight() = default;
+  vec3 color;
 
-  glm::vec3 light(tinyobj::attrib_t attributes,
-                           tinyobj::material_t material) override;
-  glm::vec3 light() override;
-  LightType lightType() override;
+  explicit AmbientLight(vec3 color);
+
+  [[nodiscard]] LightType lightType() const override;
+};
+
+class PointLight : public Light {
+public:
+  vec3 position;
+  vec3 color;
+
+  PointLight(vec3 pos, vec3 color);
+  [[nodiscard]] LightType lightType() const override;
+};
+
+class AreaLight : public Light {
+public:
+  float pdf;
+  vec3 position;
+  vec3 color;
+  vec3 intensity;
+  Triangle gem;
+
+  AreaLight(vec3 color, vec3 v1, vec3 v2, vec3 v3);
+  [[nodiscard]] LightType lightType() const override;
+  [[nodiscard]] vec3 sampleLight(vec2 rand) const;
 };

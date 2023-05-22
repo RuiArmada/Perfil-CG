@@ -1,56 +1,109 @@
 #include "scene.hpp"
 #include "geometry.hpp"
 #include "light.hpp"
+#include "path_tracer_shader.hpp"
+#include "shader.hpp"
 
 #include <fmt/color.h>
 #include <fmt/core.h>
+#include <fstream>
+#include <memory>
 #include <optional>
 
+#include <glm/gtc/random.hpp>
+#include <nlohmann/json.hpp>
 #include <tiny_obj_loader.h>
 
 using namespace tinyobj;
 using namespace glm;
 
-using std::vector;
+SceneDef::SceneDef(const std::string &filename) {
+  std::ifstream js(filename);
+  auto data = nlohmann::json::parse(js);
 
-void Scene::info() {
-  fmt::println("# of vertices: {}", attributes.vertices.size() / 3);
-  fmt::println("# of normals: {}", attributes.normals.size() / 3);
-  fmt::println("# of textCoords: {}", attributes.texcoords.size() / 2);
-  fmt::println("# of shapes: {}", shapes.size());
-  fmt::println("# of materials: {}", materials.size());
+  modelFile = data["model"];
+  outputFile = data["output"];
+  width = data["width"];
+  height = data["height"];
 
-  for (auto shape : shapes) {
-    fmt::println("Processing shape {}", shape.name);
-    for (auto vertex : shape.mesh.indices) {
-      for (int vert = 0; vert < 3; vert++) {
-        fmt::print("{} ", vertex.vertex_index);
-      }
-      fmt::println("");
+  auto &cameraDef = data["frames"][0]["camera"];
+
+  camera = make_shared<Camera>(
+      Camera(width, height, cameraDef["fov"]["x"], cameraDef["fov"]["y"],
+             {cameraDef["up"]["x"], cameraDef["up"]["y"], cameraDef["up"]["z"]},
+             {cameraDef["position"]["x"], cameraDef["position"]["y"],
+              cameraDef["position"]["z"]},
+             {cameraDef["lookingAt"]["x"], cameraDef["lookingAt"]["y"],
+              cameraDef["lookingAt"]["z"]}));
+
+  for (auto &light : data["lights"]) {
+    if (light["type"] == "point") {
+      auto l = new PointLight(
+          {light["pos"]["x"], light["pos"]["y"], light["pos"]["z"]},
+          {light["color"]["r"], light["color"]["g"], light["color"]["b"]});
+
+      fmt::print(fmt::emphasis::bold | fg(fmt::color::yellow), "[light] ");
+      fmt::println("Loading point light {} {} {}", l->color.x, l->color.y,
+                   l->color.z);
+
+      lights.push_back(l);
+    } else if (light["type"] == "ambient") {
+      auto l = new AmbientLight(
+          {light["color"]["r"], light["color"]["g"], light["color"]["b"]});
+      lights.push_back(l);
+    } else if (light["type"] == "area") {
+      auto l = new AreaLight(
+          {light["color"]["r"], light["color"]["g"], light["color"]["b"]},
+          {light["v1"]["x"], light["v1"]["y"], light["v1"]["z"]},
+          {light["v2"]["x"], light["v2"]["y"], light["v2"]["z"]},
+          {light["v3"]["x"], light["v3"]["y"], light["v3"]["z"]});
+      lights.push_back(l);
     }
-    fmt::println("There are {} material indices.",
-                 shape.mesh.material_ids.size());
-    fmt::println("Shape {} has been processed.", shape.name);
   }
+
+  if (data.contains("exposure"))
+    exposure = data["exposure"];
+
+  if (data.contains("samplesPerPixel"))
+    samplesPerPixel = data["samplesPerPixel"];
+}
+
+optional<unique_ptr<Scene>> SceneDef::getScene() {
+  auto ret = Scene::load(modelFile);
+
+  if (ret) {
+    ret.value()->setCamera(*camera);
+    ret.value()->lights = std::move(lights);
+    ret.value()->samplesPerPixel = samplesPerPixel;
+    ret.value()->exposure = exposure;
+  }
+
+  return std::move(ret);
 }
 
 // https://github.com/canmom/rasteriser/blob/master/fileloader.cpp
 // std::optional<Scene> Scene::load(const std::string &filename, const
 // std::string mats)
-std::optional<Scene> Scene::load(const std::string &filename) {
+std::optional<unique_ptr<Scene>> Scene::load(const std::string &filename) {
   ObjReader myObjReader;
 
   if (!myObjReader.ParseFromFile(filename)) {
     return std::nullopt;
   }
 
-  Scene scene;
+  auto scene = std::make_unique<Scene>();
 
-  scene.attributes = myObjReader.GetAttrib();
-  scene.shapes = myObjReader.GetShapes();
-  scene.materials = myObjReader.GetMaterials();
+  scene->attributes = myObjReader.GetAttrib();
+  scene->shapes = myObjReader.GetShapes();
+  scene->materials = {};
 
-  for (auto &shape : scene.shapes) {
+  // Materials
+  for (auto &material : myObjReader.GetMaterials()) {
+    scene->materials.emplace_back(material);
+  }
+
+  // Objects
+  for (auto &shape : scene->shapes) {
     auto &indices = shape.mesh.indices;
     auto &mat_ids = shape.mesh.material_ids;
 
@@ -58,6 +111,8 @@ std::optional<Scene> Scene::load(const std::string &filename) {
                shape.name);
     fmt::println("Loading {} materials, {} vertices...", mat_ids.size(),
                  indices.size());
+
+    Object obj{};
 
     for (auto face_id = 0; face_id < shape.mesh.material_ids.size();
          face_id++) {
@@ -73,18 +128,55 @@ std::optional<Scene> Scene::load(const std::string &filename) {
                                     indices[3 * face_id + 1].texcoord_index,
                                     indices[3 * face_id + 2].texcoord_index};
 
-      int materialIndex = mat_ids[face_id];
+      array<vec3, 3> vertices{
+          vec3(scene->attributes.vertices[vertexIndices[0] * 3],
+               scene->attributes.vertices[vertexIndices[0] * 3 + 1],
+               scene->attributes.vertices[vertexIndices[0] * 3 + 2]),
+          vec3(scene->attributes.vertices[vertexIndices[1] * 3],
+               scene->attributes.vertices[vertexIndices[1] * 3 + 1],
+               scene->attributes.vertices[vertexIndices[1] * 3 + 2]),
+          vec3(scene->attributes.vertices[vertexIndices[2] * 3],
+               scene->attributes.vertices[vertexIndices[2] * 3 + 1],
+               scene->attributes.vertices[vertexIndices[2] * 3 + 2])};
 
-      scene.faces.emplace_back(vertexIndices, normalIndices, texcoordIndices,
-                               materialIndex);
+      std::optional<array<vec3, 3>> normals = {};
+
+      if (normalIndices[0] >= 0) {
+        normals = {vec3(scene->attributes.normals[normalIndices[0] * 3],
+                        scene->attributes.normals[normalIndices[0] * 3 + 1],
+                        scene->attributes.normals[normalIndices[0] * 3 + 2]),
+                   vec3(scene->attributes.normals[normalIndices[1] * 3],
+                        scene->attributes.normals[normalIndices[1] * 3 + 1],
+                        scene->attributes.normals[normalIndices[1] * 3 + 2]),
+                   vec3(scene->attributes.normals[normalIndices[2] * 3],
+                        scene->attributes.normals[normalIndices[2] * 3 + 1],
+                        scene->attributes.normals[normalIndices[2] * 3 + 2])};
+      }
+
+      int materialIndex = mat_ids[face_id];
+      const Material *material = nullptr;
+      if (materialIndex >= 0)
+        material = &scene->materials[materialIndex];
+
+      // TODO: texCoord
+      obj.faces.emplace_back(vertices, normals, material);
     }
+
+    obj.calculateBoundingBox();
+    obj.name = shape.name;
+    scene->objects.push_back(obj);
   }
 
-  return {scene};
+  return {std::move(scene)};
 }
+
 void Scene::setCamera(const Camera &newCamera) { this->camera = &newCamera; }
 
-Scene::~Scene() = default;
+void printProgress(uint32_t height, uint32_t current) {
+  fmt::print(fmt::emphasis::bold | fg(fmt::color::green), "\r[progress] ");
+  fmt::print("{}% done", (float)(current + 1) / (float)height * 100);
+  fflush(stdout);
+}
 
 Image Scene::render() {
   if (this->camera == nullptr) {
@@ -93,52 +185,144 @@ Image Scene::render() {
 
   fmt::print(fmt::emphasis::bold | fg(fmt::color::blue), "[info] ");
   fmt::println("Starting render");
+  fmt::print(fmt::emphasis::bold | fg(fmt::color::blue), "[info] ");
+  fmt::println("spp: {}", this->samplesPerPixel);
+
+  //  AmbientShader shader(*this, {1, 1, 1});
+  //  RayCastShader shader(*this);
+  //  WhittedShader shader(*this);
+  //  DistributedShader shader(*this);
+  PathTracerShader shader(*this);
 
   Image img{camera->width, camera->height};
 
   fmt::print(fmt::emphasis::bold | fg(fmt::color::blue), "[info] ");
   fmt::println("width: {} height: {}", camera->width, camera->height);
-  int pixel = 0;
+
   for (uint32_t y = 0; y < camera->height; y++) {
     for (uint32_t x = 0; x < camera->width; x++) {
-      auto ray = camera->getRay(x, y);
+      vec3 finalColor = {0, 0, 0};
 
-      const tinyobj::material_t *mat = nullptr;
-      float dist = FLT_MAX;
-      for (auto &face : faces) {
-        if (auto new_intersection =
-                face.intersects(this->attributes, ray, this->camera->pos)) {
-          float new_dist = distance(this->camera->pos, *new_intersection);
-          if (dist > new_dist) {
-            dist = new_dist;
-            mat = &materials[face.material];
-          }
-        }
-      }
-      vec3 color = vec3(0);
-      for (Light l : this->lights) {
-        color += l.light();
+      for (int i = 0; i < samplesPerPixel; i++) {
+        vec2 jitter = glm::linearRand(vec2(0, 0), vec2(1, 1));
+        auto ray = camera->getRay(x, y, jitter);
+        //  auto ray = camera->getRay(1377, 823);
+
+        finalColor += shader.getColor(castRay(camera->pos, ray));
       }
 
-      if (mat) {
-        color.r += mat->diffuse[0];
-        color.g += mat->diffuse[1];
-        color.b += mat->diffuse[2];
-      }
+      finalColor /= samplesPerPixel;
+      finalColor *= exposure;
+      finalColor = sqrt(finalColor);
+      finalColor = clamp(finalColor, 0.0f, 0.999f);
 
-      // TODO: proper gamma correction
-
-      img.imageData.insert(
-          img.imageData.end(),
-          //{0, static_cast<unsigned char>(intersections * 8), 0});
-          {static_cast<unsigned char>(color.r * 255),
-           static_cast<unsigned char>(color.g * 255),
-           static_cast<unsigned char>(color.b * 255)});
+      img.imageData[(y * camera->width + x) * 3] =
+          static_cast<unsigned char>(finalColor.r * 256);
+      img.imageData[(y * camera->width + x) * 3 + 1] =
+          static_cast<unsigned char>(finalColor.g * 256);
+      img.imageData[(y * camera->width + x) * 3 + 2] =
+          static_cast<unsigned char>(finalColor.b * 256);
     }
+
+    printProgress(camera->height, y);
   }
 
-  fmt::print(fmt::emphasis::bold | fg(fmt::color::blue), "[info] ");
+  fmt::print(fmt::emphasis::bold | fg(fmt::color::blue), "\n[info] ");
   fmt::println("Finished rendering");
 
   return img;
+}
+
+Intersection Scene::castRay(vec3 origin, vec3 direction) const {
+  float dist = FLT_MAX;
+  optional<vec3> intersection;
+  optional<vec3> finalIntersection;
+  optional<vec3> shadingNormal;
+  optional<vec3> geometricNormal;
+  optional<vec3> lightColor;
+  const Triangle *intersectedFace = nullptr;
+  const Object *intersectedObj = nullptr;
+
+  vec3 rayInverse{1 / direction.x, 1 / direction.y, 1 / direction.z};
+  for (auto &object : objects) {
+    if (object.intersects(direction, origin, rayInverse)) {
+      for (auto &face : object.faces) {
+        // TODO: We need to filter out objects that are BEHIND the origin, but
+        // the question here is... how?
+        // 1. p = the point of the object closest, note- this may not be a
+        // vertex...
+        // 2. objDir = origin - p
+        // 3. dot(direction, objDir) > 0 means that it's in front
+        if ((intersection = face.intersects(direction, origin)).has_value()) {
+          float new_dist = distance(origin, *intersection);
+          if (dist > new_dist) {
+            dist = new_dist;
+            finalIntersection = intersection;
+            intersectedFace = &face;
+            intersectedObj = &object;
+          }
+        }
+      }
+    }
+  }
+
+  for (auto light : lights) {
+    if (light->lightType() == LightType::AREA) {
+      AreaLight &areaLight = *dynamic_cast<AreaLight *>(light);
+      if ((intersection = areaLight.gem.intersects(direction, origin))
+              .has_value()) {
+        if (!finalIntersection.has_value()) {
+          finalIntersection = intersection;
+          intersectedFace = &areaLight.gem;
+          lightColor = areaLight.color;
+        } else {
+          float new_dist = distance(origin, *intersection);
+          if (dist > new_dist) {
+            finalIntersection = intersection;
+            intersectedFace = &areaLight.gem;
+            lightColor = areaLight.color;
+          }
+        }
+      }
+    }
+  }
+
+  if (finalIntersection.has_value()) {
+    vec3 normal = normalize(intersectedFace->planeNormal);
+    if (dot(direction, normal) > 0) {
+      normal = -normal;
+    }
+
+    shadingNormal = normal;
+    geometricNormal = normal;
+  }
+
+  return {direction,       finalIntersection, shadingNormal,
+          geometricNormal, lightColor,        intersectedFace};
+}
+
+bool Scene::visibility(vec3 origin, vec3 direction, const float maxL) const {
+  vec3 rayInverse{1 / direction.x, 1 / direction.y, 1 / direction.z};
+
+  for (auto &object : objects) {
+    if (object.intersects(direction, origin, rayInverse)) {
+      for (auto &face : object.faces) {
+        auto isect = face.intersects(direction, origin);
+        if (isect) {
+          if (distance(origin, *isect) < maxL) {
+            return false;
+          }
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+Scene::~Scene() {
+  // Dealocate every light
+  for (auto &light : lights) {
+    delete light;
+  }
 }

@@ -13,31 +13,55 @@
 
 using namespace glm;
 
+struct Intersection {
+  vec3 ray;
+  optional<vec3> pos;
+  optional<vec3> shadingNormal;
+  optional<vec3> geometricNormal;
+  optional<vec3> lightColor;
+  const Triangle *face;
+};
+
 class Scene {
 private:
-  std::vector<Triangle> faces;
+  std::vector<Object> objects;
 
   const Camera *camera = nullptr;
-
-  void info();
-
-  //  void componentToVec2(const vector<float> &components, vector<vec2> &vecs);
-  //  void componentToVec3(const vector<float> components, vector<vec3> &vecs);
-  //  void loadFaces(shape_t & shape, vector<Triangle> & faces);
 
 public:
   tinyobj::attrib_t attributes;
   std::vector<tinyobj::shape_t> shapes;
-  std::vector<tinyobj::material_t> materials;
-  std::vector<Light> lights;
+  std::vector<Material> materials;
+  std::vector<Light *> lights;
+
+  float exposure = 1;
+  int samplesPerPixel = 16;
 
   /**
    * Loads and creates a scene from a filename
    */
-  static std::optional<Scene> load(const std::string &filename);
+  static std::optional<unique_ptr<Scene>> load(const std::string &filename);
   ~Scene();
 
   void setCamera(const Camera &camera);
 
+  [[nodiscard]] Intersection castRay(vec3 origin, vec3 direction) const;
+  [[nodiscard]] bool visibility(vec3 origin, vec3 direction, float L) const;
+
   Image render();
+};
+
+class SceneDef {
+public:
+  std::string modelFile, outputFile;
+  uint32_t width, height;
+  shared_ptr<Camera> camera;
+  std::vector<Light *> lights{};
+
+  float exposure = 1;
+  int samplesPerPixel = 16;
+
+  explicit SceneDef(const std::string &filename);
+
+  optional<unique_ptr<Scene>> getScene();
 };

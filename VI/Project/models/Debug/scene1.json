@@ -1,0 +1,1 @@
+{"title": "light", "model": "models/light.obj", "width": 1920, "height": 1080, "frames": [{"frame": 0, "camera": {"position": {"x": 0.0, "y": 0.0, "z": -0.0}, "up": {"x": 0, "y": -1, "z": 0}, "lookingAt": {"x": 0.0, "y": 4.371138828673793e-08, "z": -1.0}, "fov": {"x": 0.6911112070083618, "y": 0.4710899591445923}}}], "output": "image.png"}

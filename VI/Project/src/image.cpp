@@ -5,7 +5,7 @@
 #include <spng/spng.h>
 
 Image::Image(uint32_t width, uint32_t height) : width{width}, height{height} {
-  imageData.reserve(width * height);
+  imageData.resize(width * height * 3);
 }
 
 bool Image::writePNG(const std::string &filename) {
@@ -51,6 +51,8 @@ bool Image::writePNG(const std::string &filename) {
   }
 
   std::fwrite(png_buf, png_size, 1, f);
+
+  free(png_buf);
 
   spng_ctx_free(ctx);
   std::fclose(f);

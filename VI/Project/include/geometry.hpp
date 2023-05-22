@@ -2,9 +2,9 @@
 
 #include "material.hpp"
 #include <array>
+#include <optional>
 #include <tiny_obj_loader.h>
 #include <vector>
-#include <optional>
 
 #include <glm/vec3.hpp>
 
@@ -14,40 +14,80 @@ using namespace glm;
 class Triangle {
 public:
   Triangle() = default;
-  Triangle(array<int, 3> vertices, array<int, 3> normals,
-           array<int, 3> texcoords, int material)
-      : vertexIndices{vertices}, normalIndices{normals},
-        texcoordIndices{texcoords}, material{material} {};
+  Triangle(array<vec3, 3> vertices, optional<array<vec3, 3>> normals,
+           const Material *material);
+  ;
+
+  Triangle(array<vec3, 3> vertices);
+  /**
+   * The three vertices that make up triangle.
+   */
+  array<vec3, 3> vertices;
+
+  vec3 planeNormal{};
 
   /**
-   * Indices for the three vertices that make up the triangle.
-   */
-  array<int, 3> vertexIndices;
-  /**
-   * Indices for the three normal vectors for each vertex that
+   * The three normal vectors for each vertex that
    * are needed for interpolated normal calculation in interpolated
    * shading.
    */
-  array<int, 3> normalIndices;
-  /**
-   * Three dimensional vector describing the normal direction of the
-   * triangle for simple shading.
-   */
-  array<int, 3> texcoordIndices;
-  /**
-   *
-   */
-  int material;
+  std::optional<array<vec3, 3>> normals;
 
-  array<vec3, 3> getVertices(const tinyobj::attrib_t &attrib);
+  const Material *material = nullptr;
 
   /**
    * Checks if a ray intersects the triangle
    * @param ray The ray vector
    * @param origin The origin point of the ray
-   * @return Boolean specifying whether an intersection was detected
+   * @return The intersection point if an intersection was detected. Otherwise,
+   * returns empty optional.
    */
-  optional<vec3> intersects(const tinyobj::attrib_t &attrib, vec3 ray, vec3 origin);
+  [[nodiscard]] optional<vec3> intersects(vec3 ray, vec3 origin) const;
+
+  float area() const;
+};
+
+class Object {
+private:
+  vec3 minPoint{0}, maxPoint{0};
+
+public:
+  vector<Triangle> faces;
+  string name;
+
+  /**
+   * Checks if a ray intersects the object's bounding box
+   * @param ray The ray vector
+   * @param origin The origin point of the ray
+   * @param rayInverse Inverse of the ray
+   * @return Whether an intersection was detected
+   */
+  inline bool intersects(vec3 ray, vec3 origin, vec3 rayInverse) const {
+    float tx1 = (minPoint.x - origin.x) * rayInverse.x;
+    float tx2 = (maxPoint.x - origin.x) * rayInverse.x;
+
+    float tmin = std::min(tx1, tx2);
+    float tmax = std::max(tx1, tx2);
+
+    float ty1 = (minPoint.y - origin.y) * rayInverse.y;
+    float ty2 = (maxPoint.y - origin.y) * rayInverse.y;
+
+    tmin = std::max(tmin, std::min(ty1, ty2));
+    tmax = std::min(tmax, std::max(ty1, ty2));
+
+    float tz1 = (minPoint.z - origin.z) * rayInverse.z;
+    float tz2 = (maxPoint.z - origin.z) * rayInverse.z;
+
+    tmin = std::max(tmin, std::min(tz1, tz2));
+    tmax = std::min(tmax, std::max(tz1, tz2));
+
+    return tmax >= tmin;
+  }
+
+  /**
+   * Calculates the bounding box for the object.
+   */
+  void calculateBoundingBox();
 };
 
 class Geometry {

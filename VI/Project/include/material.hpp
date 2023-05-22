@@ -1,23 +1,17 @@
 #pragma once
 
-using namespace std;
+#include <glm/glm.hpp>
+#include <tiny_obj_loader.h>
 
-class RGB {
-    public:
-        RGB(float r = 0, float g = 0, float b = 0);
-
-        float R, G, B;
-};
-
-class BRDF {
-    public:
-        BRDF() = default;
-};
+using namespace glm;
 
 class Material {
-    public:
-        Material() = default;
+public:
+  explicit Material(const tinyobj::material_t &material);
 
-        RGB rgb;
-        BRDF brdf;
+  vec3 specular{};
+  vec3 diffuse{};
+  vec3 emission{};
+  vec3 ambient{};
+  float shininess;
 };
