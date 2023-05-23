@@ -51,7 +51,8 @@ vec3 PathTracerShader::diffuseReflection(const Intersection &isect,
   float cosTheta = sqrtf(rand.y);
 
   vec3 dAroundZ{cosf(2.f * (float)M_PI * rand.x) * sqrtf(1.f - rand.y),
-                sinf(2.f * (float)M_PI * rand.x) * sqrtf(1.f - rand.y), cosTheta};
+                sinf(2.f * (float)M_PI * rand.x) * sqrtf(1.f - rand.y),
+                cosTheta};
 
   vec3 rayZ = *isect.shadingNormal;
   vec3 rayX, rayY;
@@ -73,8 +74,8 @@ vec3 PathTracerShader::diffuseReflection(const Intersection &isect,
   auto intersection = scene.castRay(diffuse.origin, diffuse.direction);
 
   if (!intersection.lightColor.has_value()) {
-    vec3 rColor = getColorInternal(intersection, depth+1);
-    color = (material.diffuse * rColor);// / (cosTheta / (float)M_PI);
+    vec3 rColor = getColorInternal(intersection, depth + 1);
+    color = (material.diffuse * rColor) / (cosTheta / (float)M_PI);
   }
 
   return color;
