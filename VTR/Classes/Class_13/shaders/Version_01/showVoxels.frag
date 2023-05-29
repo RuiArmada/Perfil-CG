@@ -10,7 +10,6 @@ uniform vec2 WindowSize;
 uniform vec3 RayOrigin;
 uniform int GridSize;
 
-
 struct Ray {
     vec3 Origin;
     vec3 Dir;
@@ -60,6 +59,19 @@ void main() {
     rayStart = 0.5 * (rayStart + 1.0);
     rayStop = 0.5 * (rayStop + 1.0);
 
+    int steps = int(distance(rayStop, rayStart) * float(GridSize) * 2);
+    vec3 step = (rayStop - rayStart) / float(steps);
+
+    vec3 pos = rayStart + 0.5 * step;
+    int travel = steps;
+    vec4 color = vec4(0);
+
+    for (; travel != 0; travel--) {
+        color += vec4(texelFetch(grid, ivec3((pos) * GridSize), 0).r);
+        pos += step;
+    }
+    color = color * 0.01;
+
     // complete the code to raycast the volume
-    FragColor = vec4(0.0, 0.0, 0.0, 1.0);    
+    FragColor = vec4(vec3(color), color.w);    
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<project name="Buffer Test" width="512" height="512">
+	<assets>
+		<materialLibs>
+			<materialLib filename="../materials/material.mlib"/>
+		</materialLibs>
+	</assets>
+	
+	<pipelines>
+		<pipeline name="copyBuffer" default="true">
+			<pass class="compute" name="pass1">
+				<material name="copyBuffer" fromLibrary="Compute" dimX="5" dimY="1" dimZ="1" />
+			</pass>
+		</pipeline>
+	</pipelines>
+</project>	

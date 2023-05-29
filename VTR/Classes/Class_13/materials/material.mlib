@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<materialLib name="Voxels">
+
+	<textures>
+		<texture name="grid" filename="../textures/foot.vtk" />
+	</textures>
+	
+	<shaders>
+		<shader name="showVoxels" 		vs = "../shaders/Version_01/showVoxels.vert" 
+										ps = "../shaders/Version_01/showVoxels.frag" /> 
+	</shaders>
+	
+	<states>
+		<state name="NoCull">
+			<CULL_FACE value="0" />
+		</state>	
+	</states>
+	
+	<materials>
+		<material name ="showVoxels">
+			<shader name="showVoxels">
+				<values>
+					<valueof uniform="RayOrigin"    type="CAMERA" context="CURRENT" 
+														component="POSITION" />
+					<valueof uniform="FOV"			type="CAMERA" context="CURRENT"
+														component="FOV" />
+					<valueof uniform="RATIO"		type="VIEWPORT" context="MainViewport"
+														component="ABSOLUTE_RATIO" />
+					<valueof uniform="PVM"          type="RENDERER" context="CURRENT" 
+														component="PROJECTION_VIEW_MODEL" />
+					<valueof uniform="VM"         	type="RENDERER" context="CURRENT" 
+														component="VIEW_MODEL" />
+					<valueof uniform="grid"			type="TEXTURE_BINDING" context="CURRENT"
+														id="1" component="UNIT" />
+					<valueof uniform="WindowSize"	type="VIEWPORT" context="CURRENT"
+														component="ABSOLUTE_SIZE" />
+					<valueof uniform="GridSize" 	type="PASS" context="CURRENT"
+														component="GridSize" />
+				</values>
+			</shader>
+			
+			<textures>
+				<texture UNIT="1" name="grid" >
+				</texture>
+			</textures>
+			<!-- state is required when we enter the box -->
+			<state name="NoCull" />
+		</material>
+
+
+	</materials>
+	
+</materialLib>
