@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<materialLib name="SDF">
+
+    <shaders>
+		<shader name="sdf" >
+            <vs>
+                <file name="../shaders/Version_01/quad.vert" />
+            </vs>
+            <ps>
+                <file name = "../shaders/Version_01/header.glsl" />
+                <file name = "../shaders/Version_01/hg_sdf.glsl" />
+                <file name = "../shaders/Version_01/sdf.frag" />
+            </ps>
+        </shader>            
+    </shaders>
+
+    <materials>
+	
+		<material name="sdf">
+
+			<shader name="sdf">
+                <values>
+
+                    <valueof uniform="RayOrigin"    type="CAMERA" context="MainCamera" 
+                        component="POSITION" />
+
+                    <valueof uniform="FOV"			type="CAMERA" context="MainCamera"
+                        component="FOV" />
+
+                    <valueof uniform="Ratio"		type="VIEWPORT" context="MainViewport"
+                        component="ABSOLUTE_RATIO" />
+
+                    <valueof uniform="WindowSize"	type="VIEWPORT" context="MainViewport"
+                        component="ABSOLUTE_SIZE" />
+
+                    <valueof uniform="CamUp"         	type="CAMERA" context="MainCamera" 
+                        component="NORMALIZED_UP" />
+
+                    <valueof uniform="CamView"         	type="CAMERA" context="MainCamera" 
+                        component="NORMALIZED_VIEW" />
+
+                    <valueof uniform="CamRight"         	type="CAMERA" context="MainCamera" 
+                        component="NORMALIZED_RIGHT" />
+
+                    <valueof uniform="LightPos" type="LIGHT" context="Lamp"
+                        component="POSITION" />
+
+                    <valueof uniform="Timer" type="RENDERER" context="CURRENT"
+                        component="TIMER" />
+
+                    <!--valueof uniform="Operation" type="RENDERER" context="CURRENT"
+                        component="OPERATION" />
+
+                    <valueof uniform="Figure" type="RENDERER" context="CURRENT"
+                        component="FIGURE" />
+
+                    <valueof uniform="Order" type="RENDERER" context="CURRENT"
+                        component="ORDER" /-->
+
+                </values>                         
+            </shader>
+
+
+        </material>
+
+
+    </materials>
+
+</materialLib>

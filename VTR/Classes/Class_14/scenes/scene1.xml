@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<project name="Signed-Distance Functions - Operations" width="1024" height="512">
+	<assets>   
+
+		<!--attributes>
+			<attribute type="RENDERER" name="OPERATION" data="INT" value="0" />	
+			<attribute type="RENDERER" name="FIGURE" data="INT" value="0" />	
+			<attribute type="RENDERER" name="ORDER" data="INT" value="0" />	
+        </attributes-->
+
+        <viewports>
+			<viewport name="MainViewport">
+				<CLEAR_COLOR r="0.0" g="0.0" b="0.0" />
+			</viewport>
+		</viewports>
+
+		<cameras>
+			<camera name="MainCamera">
+				<viewport name="MainViewport" />
+				<projection TYPE="PERSPECTIVE" FOV="60" />
+				<POSITION x="1.145" y="4.872" z="5.001" />
+				<LOOK_AT_POINT x="2.513" y="1.698" z="4.222" />
+				<UP x="0" y="1" z="0" />
+			</camera>
+        </cameras>
+
+		<lights>
+			<light name="Lamp" >
+				<POSITION x="40.0" y="55.0" z="35.0" />
+			</light>
+		</lights>
+
+        <materialLibs>
+            <materialLib filename = "../materials/material.mlib" />
+        </materialLibs>
+    </assets>
+
+    <pipelines>
+
+        <pipeline name="sdf" defaultCamera="MainCamera">
+
+
+            <pass class = "quad" name="show" >
+                <viewport name="MainViewport" />
+                <material name="sdf" fromLibrary="SDF" />
+            </pass>
+        </pipeline>
+    </pipelines>
+
+
+	<!--interface>
+		<window label="SDF Operations">
+	
+			<var label="Opearation" type="RENDERER" context="CURRENT"
+			     component="OPERATION" strings="Union,Difference,Intersection" />	
+			<var label="Figure" type="RENDERER" context="CURRENT"
+			     component="FIGURE" strings="Cylinder,Box" />	
+			<var label="Order" type="RENDERER" context="CURRENT"
+			     component="ORDER" strings="Shpere First,Sphere Last" />	
+		</window>			
+	</interface-->
+
+</project>
