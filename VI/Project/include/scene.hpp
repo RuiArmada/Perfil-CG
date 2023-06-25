@@ -3,24 +3,16 @@
 #include "camera.hpp"
 #include "geometry.hpp"
 #include "image.hpp"
+#include "intersection.hpp"
+#include "light.hpp"
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
-#include <light.hpp>
 #include <memory>
 #include <optional>
 #include <string>
 #include <tiny_obj_loader.h>
 
 using namespace glm;
-
-struct Intersection {
-  vec3 ray;
-  optional<vec3> pos;
-  optional<vec3> shadingNormal;
-  optional<vec3> geometricNormal;
-  optional<vec3> lightColor;
-  const Triangle *face;
-};
 
 class Scene {
 private:
@@ -31,7 +23,7 @@ private:
 public:
   tinyobj::attrib_t attributes;
   std::vector<tinyobj::shape_t> shapes;
-  std::vector<Material> materials;
+  std::vector<Material> materials{};
   std::vector<Light *> lights;
 
   float exposure = 1;

@@ -3,10 +3,23 @@
 #include <optional>
 
 Triangle::Triangle(array<vec3, 3> vertices, optional<array<vec3, 3>> normals,
-                   const Material *material)
-    : vertices{vertices}, normals{normals}, material{material} {
+                   optional<array<vec2, 3>> texcoords, const Material *material)
+    : vertices{vertices}, normals{normals}, texcoords{texcoords},
+      material{material} {
   this->planeNormal =
       cross(vertices[1] - vertices[0], vertices[2] - vertices[0]);
+
+  vec3 D = vertices[1] - vertices[0];
+  vec3 E = vertices[2] - vertices[0];
+  vec2 F = (*texcoords)[1] - (*texcoords)[0];
+  vec2 G = (*texcoords)[2] - (*texcoords)[0];
+  float denom = 1 / (F.s * G.t - F.t * G.s);
+  tangent = vec3{G.t * D.x - F.t * E.x, G.t * D.y - F.t * E.y,
+                 G.t * D.z - F.t * E.z} /
+            denom;
+  bitangent = vec3{-G.s * D.x + F.s * E.x, -G.s * D.y + F.s * E.y,
+                   -G.s * D.z + F.s * E.z} /
+              denom;
 }
 
 Triangle::Triangle(array<vec3, 3> vertices) : vertices(vertices) {

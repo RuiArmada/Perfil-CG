@@ -1,4 +1,5 @@
 #include "path_tracer_shader.hpp"
+#include "bsdf.hpp"
 #include "fmt/core.h"
 #include "ray.hpp"
 #include <fmt/color.h>
@@ -6,11 +7,89 @@
 #define MAX_DEPTH 4
 #define CONTINUE_P 0.5f
 
-vec3 PathTracerShader::getColor(const Intersection &intersection) {
-  return getColorInternal(intersection, 0);
+vec3 PathTracerShader::getColor(const Intersection &isect) {
+  //  return getColorInternal(intersection, 0);
+  // https://www.pbr-book.org/3ed-2018/Light_Transport_I_Surface_Reflection/Path_Tracing
+  vec3 color{0.f}, beta{1.f};
+  bool specularBounce = false;
+  Ray ray(isect.source, isect.ray);
+  auto intersection = isect;
+
+  for (int bounces = 0;; ++bounces) {
+    bool foundIntersection = intersection.pos.has_value();
+
+    if (bounces == 0 || specularBounce) {
+      if (foundIntersection) {
+        //          color += beta * *intersection.lightColor;
+        // TODO: contribute with intersection's emitted light
+      } else {
+        for (const auto &light : scene.lights) {
+          // This way, if the ray hits nothing, we can sample an environment
+          // light, such as ambient or an HDRI.
+          color += beta * light->Le(ray.direction);
+        }
+      }
+    }
+
+    if (!foundIntersection ||
+        (bounces >= MAX_DEPTH && glm::linearRand(0.0f, 1.0f) > CONTINUE_P))
+      break;
+
+    // TODO: It's best to only sample one light * n of lights
+    BSDF bsdf(intersection);
+    color += beta * uniformSampleAllLights(intersection, bsdf);
+
+    vec3 wo = -ray.direction, wi;
+    float pdf;
+    vec3 f = bsdf.sampleF(wo, wi, pdf);
+
+    if (f == vec3{0.f} || pdf == 0.f)
+      break;
+    beta *= f * abs(dot(wi, *intersection.shadingNormal)) / pdf;
+    specularBounce = true;
+    ray = Ray(*intersection.pos, normalize(wi));
+    ray.adjustOrigin(*intersection.shadingNormal);
+    intersection = scene.castRay(ray.origin, ray.direction);
+  }
+
+  return color;
 }
 
-vec3 PathTracerShader::getColorInternal(const Intersection &intersection,
+vec3 PathTracerShader::uniformSampleAllLights(const Intersection &intersection,
+                                              const BSDF &bsdf) const {
+  vec3 color{0.f};
+
+  for (auto light : scene.lights) {
+    if (light->lightType() == POINT) {
+      color += estimateDirect(intersection, *light, bsdf);
+    }
+  }
+
+  return color;
+}
+
+vec3 PathTracerShader::estimateDirect(const Intersection &intersection,
+                                      const Light &light,
+                                      const BSDF &bsdf) const {
+  vec3 ld{.0f};
+  vec3 wi;
+  float lightPdf = 0.f, scatteringPdf = 0.f;
+  vec3 li = light.sample_Li(intersection, wi, scene, lightPdf);
+  if (lightPdf > 0 && li != vec3{.0f}) {
+    vec3 f = bsdf.f(-intersection.ray, wi) *
+             abs(dot(wi, *intersection.shadingNormal));
+    scatteringPdf = intersection.face->material->pdf(-intersection.ray, wi);
+
+    // TODO: might need to check occlusion here?
+    if (li != vec3{0.f}) {
+      ld += f * li / lightPdf;
+    }
+  }
+
+  return ld;
+}
+
+/*vec3 PathTracerShader::getColorInternal(const Intersection &intersection,
                                         int depth) {
   vec3 color{0, 0, 0};
 
@@ -28,12 +107,39 @@ vec3 PathTracerShader::getColorInternal(const Intersection &intersection,
   if (depth < MAX_DEPTH || rnd_russian < CONTINUE_P) {
     auto m = intersection.face->material;
     vec3 lcolor = vec3(0, 0, 0);
-    if (m->specular != vec3(0, 0, 0))
-      lcolor += specularReflection(intersection, *m, depth + 1);
-    if (m->diffuse != vec3(0, 0, 0)) {
-      lcolor += diffuseReflection(intersection, *m, depth + 1);
-      lcolor += directLighting(intersection, *m);
-    }
+    // if (m->specular != vec3(0, 0, 0))
+    //   lcolor += specularReflection(intersection, *m, depth + 1);
+    // if (m->diffuse != vec3(0, 0, 0)) {
+    //   lcolor += diffuseReflection(intersection, *m, depth + 1);
+    //   lcolor += directLighting(intersection, *m);
+    // }
+
+    // PBR model!
+    // for (auto &light : scene.lights) {
+    //   // Let's only deal with point lights for now
+    //   if (light->lightType() != LightType::POINT)
+    //     continue;
+    //   auto pointLight = dynamic_cast<const PointLight *>(light);
+    //   vec3 brdf{}, incidentRadiance{};
+    //
+    //   // Atenuation is the square of the distance to the light source
+    //   // vec3 norm2 = (intersection.pos.value() - pointLight->position);
+    //   // float atenuation =
+    //   //     norm2.x * norm2.x + norm2.y * norm2.y + norm2.z * norm2.z;
+    //   //
+    //   // // This is how much light is hitting our point
+    //   // incidentRadiance =
+    //   //     (pointLight->intensity * pointLight->color) / atenuation;
+    //   //
+    //   // incidentRadiance = directLighting(intersection, light);
+    //   vec3 diffuseLight = intersection.face->material->diffuse / (float)M_PI;
+    //   lcolor = incidentRadiance * diffuseLight;
+    //   //
+    // }
+    //
+
+    lcolor = lightRadiance(intersection, *intersection.face->material);
+    lcolor += diffuseReflection(intersection, *m, depth + 1);
 
     if (depth < MAX_DEPTH)
       color += lcolor;
@@ -42,6 +148,51 @@ vec3 PathTracerShader::getColorInternal(const Intersection &intersection,
   }
 
   return color;
+}
+
+*//**
+ * cosTheta = dot (h, v)
+ * h = (l + v) / ||l + v||
+ *
+ * v is the view vector, aka -rayDir
+ * l is the light vector, aka lightDir, aka normalize(lightPos - isect.por)
+ *
+ * ior is the index of refraction, material.ior
+ *//*
+vec3 fresnelSchlick(float cosTheta, vec3 f0) {
+  return f0 + (vec3{1.0f} - f0) * powf(1 - cosTheta, 5);
+}
+
+/// Calculates the distribution function for a microfacet model
+float ggxDistribution(vec3 normal, vec3 half, float roughness) {
+  float a = roughness * roughness;
+  float a2 = a * a;
+  float NdotH = glm::max(dot(normal, half), 0.f);
+  float NdotH2 = NdotH * NdotH;
+
+  float nom = a2;
+  float denom = (NdotH2 * (a2 - 1.0) + 1.0);
+  denom = M_PI * denom * denom;
+
+  return nom / denom;
+}
+
+float shlickGGX(float NdotV, float k) {
+  // For now, we're only using direct lighting. When we support environment
+  // maps, we should change how k is calculated. In that case, k = (a^2)/2
+  float nom = NdotV;
+  float denom = NdotV * (1.0 - k) + k;
+
+  return nom / denom;
+}
+
+float geometrySmith(vec3 normal, vec3 view, vec3 light, float k) {
+  float NdotV = glm::max(dot(normal, view), 0.0f);
+  float NdotL = glm::max(dot(normal, light), 0.0f);
+  float ggx1 = shlickGGX(NdotV, k);
+  float ggx2 = shlickGGX(NdotL, k);
+
+  return ggx1 * ggx2;
 }
 
 vec3 PathTracerShader::diffuseReflection(const Intersection &isect,
@@ -75,14 +226,14 @@ vec3 PathTracerShader::diffuseReflection(const Intersection &isect,
 
   if (!intersection.lightColor.has_value()) {
     vec3 rColor = getColorInternal(intersection, depth + 1);
-    color = (material.diffuse * rColor) / (cosTheta / (float)M_PI);
+    color = (material.diffuse * rColor); // / (cosTheta / (float)M_PI);
   }
 
   return color;
 }
 
-vec3 PathTracerShader::directLighting(const Intersection &isect,
-                                      const Material &material) {
+vec3 PathTracerShader::lightRadiance(const Intersection &isect,
+                                     const Material &material) {
   vec3 color{0, 0, 0};
 
   for (auto &light : scene.lights) {
@@ -93,20 +244,60 @@ vec3 PathTracerShader::directLighting(const Intersection &isect,
     case LightType::POINT:
       if (material.diffuse != vec3(0, 0, 0)) {
         auto &pointLight = dynamic_cast<const PointLight &>(*light);
-        vec3 lDir = glm::normalize(pointLight.position - *isect.pos);
+        vec3 lightDir = glm::normalize(pointLight.position - *isect.pos);
+        vec3 viewDir = -isect.ray;
         const float lDistance = glm::distance(pointLight.position, *isect.pos);
+
+        // Atenuation is the square of the distance to the light source
+        vec3 norm2 = (isect.pos.value() - pointLight.position);
+        float atenuation =
+            1 / (norm2.x * norm2.x + norm2.y * norm2.y + norm2.z * norm2.z);
 
         vec3 normal = *isect.shadingNormal;
         // TODO should be shading normal, but don't know where to get that...
-        float cosL = dot(lDir, normal);
+        float cosL = dot(lightDir, normal);
 
         if (cosL > 0) {
           // Light is NOT behind the primitive
-          Ray ray(*isect.pos, lDir);
-          ray.adjustOrigin(normal);
+          Ray shadowRay(*isect.pos, lightDir);
+          shadowRay.adjustOrigin(normal);
 
-          if (scene.visibility(ray.origin, ray.direction, lDistance - 0.0001f))
-            color += material.diffuse * pointLight.color * cosL;
+          if (scene.visibility(shadowRay.origin, shadowRay.direction,
+                               lDistance - 0.0001f)) {
+            vec3 half = normalize(lightDir + viewDir);
+            float cosTheta = dot(half, viewDir);
+
+            vec3 f0 = vec3{(1.0f - material.ior) / (1.0f + material.ior)};
+            f0 = f0 * f0;
+            f0 = mix(f0, material.diffuse, material.metallic);
+            vec3 fresnel = fresnelSchlick(cosTheta, f0);
+            float ggx = ggxDistribution(normal, half, material.roughness);
+            float k = (material.roughness + 1.0f) *
+                      (material.roughness + 1.0f) / 8.0f;
+
+            // Calculates self-occlusion
+            float geometry = geometrySmith(normal, viewDir, lightDir, k);
+
+            vec3 radiance =
+                pointLight.color * pointLight.intensity * atenuation;
+
+            vec3 numerator = ggx * geometry * fresnel;
+            float denominator = 4.0f * glm::max(dot(normal, viewDir), 0.0f) *
+                                    glm::max(dot(normal, lightDir), 0.0f) +
+                                0.0001f;
+            vec3 specular = numerator / denominator;
+
+            // How much the specular component affects the color
+            vec3 kS = fresnel;
+            // Same for diffuse
+            vec3 kD = vec3(1.0f) - kS;
+
+            kD *= 1.0 - material.metallic;
+
+            float NdotL = glm::max(dot(normal, lightDir), 0.0f);
+            color += (kD * material.albedo / (float)M_PI + specular) *
+                     radiance * NdotL;
+          }
         }
       }
       break;
@@ -198,3 +389,4 @@ vec3 PathTracerShader::specularReflection(const Intersection &isect,
 
   return color;
 }
+*/

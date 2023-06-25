@@ -8,7 +8,7 @@ class Image {
 public:
   uint32_t width;
   uint32_t height;
-  std::vector<uint8_t> imageData = {};
+  std::vector<float> imageData = {};
 
   Image(uint32_t width, uint32_t height);
   bool writePNG(const std::string &filename);

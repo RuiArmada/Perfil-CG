@@ -40,7 +40,8 @@ SceneDef::SceneDef(const std::string &filename) {
     if (light["type"] == "point") {
       auto l = new PointLight(
           {light["pos"]["x"], light["pos"]["y"], light["pos"]["z"]},
-          {light["color"]["r"], light["color"]["g"], light["color"]["b"]});
+          {light["color"]["r"], light["color"]["g"], light["color"]["b"]},
+          light["power"]);
 
       fmt::print(fmt::emphasis::bold | fg(fmt::color::yellow), "[light] ");
       fmt::println("Loading point light {} {} {}", l->color.x, l->color.y,
@@ -95,7 +96,6 @@ std::optional<unique_ptr<Scene>> Scene::load(const std::string &filename) {
 
   scene->attributes = myObjReader.GetAttrib();
   scene->shapes = myObjReader.GetShapes();
-  scene->materials = {};
 
   // Materials
   for (auto &material : myObjReader.GetMaterials()) {
@@ -153,13 +153,25 @@ std::optional<unique_ptr<Scene>> Scene::load(const std::string &filename) {
                         scene->attributes.normals[normalIndices[2] * 3 + 2])};
       }
 
+      std::optional<array<vec2, 3>> texcoords = {};
+      if (texcoordIndices[0] >= 0) {
+        texcoords = {
+          vec2(scene->attributes.texcoords[texcoordIndices[0] * 2],
+               scene->attributes.texcoords[texcoordIndices[0] * 2 + 1]),
+          vec2(scene->attributes.texcoords[texcoordIndices[1] * 2],
+               scene->attributes.texcoords[texcoordIndices[1] * 2 + 1]),
+          vec2(scene->attributes.texcoords[texcoordIndices[2] * 2],
+               scene->attributes.texcoords[texcoordIndices[2] * 2 + 1]),
+        };
+      }
+
       int materialIndex = mat_ids[face_id];
       const Material *material = nullptr;
       if (materialIndex >= 0)
         material = &scene->materials[materialIndex];
 
       // TODO: texCoord
-      obj.faces.emplace_back(vertices, normals, material);
+      obj.faces.emplace_back(vertices, normals, texcoords, material);
     }
 
     obj.calculateBoundingBox();
@@ -188,10 +200,6 @@ Image Scene::render() {
   fmt::print(fmt::emphasis::bold | fg(fmt::color::blue), "[info] ");
   fmt::println("spp: {}", this->samplesPerPixel);
 
-  //  AmbientShader shader(*this, {1, 1, 1});
-  //  RayCastShader shader(*this);
-  //  WhittedShader shader(*this);
-  //  DistributedShader shader(*this);
   PathTracerShader shader(*this);
 
   Image img{camera->width, camera->height};
@@ -203,25 +211,31 @@ Image Scene::render() {
     for (uint32_t x = 0; x < camera->width; x++) {
       vec3 finalColor = {0, 0, 0};
 
+      float finalColorR = 0, finalColorG = 0, finalColorB = 0;
+
+      // #pragma omp parallel for reduction(+:finalColorR)
+      //  reduction(+:finalColorG) reduction(+:finalColorB)
       for (int i = 0; i < samplesPerPixel; i++) {
         vec2 jitter = glm::linearRand(vec2(0, 0), vec2(1, 1));
         auto ray = camera->getRay(x, y, jitter);
-        //  auto ray = camera->getRay(1377, 823);
+//                auto ray = camera->getRay(483, 270, jitter);
 
-        finalColor += shader.getColor(castRay(camera->pos, ray));
+        vec3 color = shader.getColor(castRay(camera->pos, ray));
+        finalColorR += color.r;
+        finalColorG += color.g;
+        finalColorB += color.b;
       }
+
+      finalColor = {finalColorR, finalColorG, finalColorB};
 
       finalColor /= samplesPerPixel;
       finalColor *= exposure;
-      finalColor = sqrt(finalColor);
-      finalColor = clamp(finalColor, 0.0f, 0.999f);
+      finalColor /= finalColor + vec3{1.0};
+      finalColor = glm::pow(finalColor, vec3(1 / 2.2f));
 
-      img.imageData[(y * camera->width + x) * 3] =
-          static_cast<unsigned char>(finalColor.r * 256);
-      img.imageData[(y * camera->width + x) * 3 + 1] =
-          static_cast<unsigned char>(finalColor.g * 256);
-      img.imageData[(y * camera->width + x) * 3 + 2] =
-          static_cast<unsigned char>(finalColor.b * 256);
+      img.imageData[(y * camera->width + x) * 3] = finalColor.r;
+      img.imageData[(y * camera->width + x) * 3 + 1] = finalColor.g;
+      img.imageData[(y * camera->width + x) * 3 + 2] = finalColor.b;
     }
 
     printProgress(camera->height, y);
@@ -297,8 +311,8 @@ Intersection Scene::castRay(vec3 origin, vec3 direction) const {
     geometricNormal = normal;
   }
 
-  return {direction,       finalIntersection, shadingNormal,
-          geometricNormal, lightColor,        intersectedFace};
+  return {direction,       origin,     finalIntersection, shadingNormal,
+          geometricNormal, lightColor, intersectedFace};
 }
 
 bool Scene::visibility(vec3 origin, vec3 direction, const float maxL) const {

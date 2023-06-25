@@ -15,10 +15,11 @@ class Triangle {
 public:
   Triangle() = default;
   Triangle(array<vec3, 3> vertices, optional<array<vec3, 3>> normals,
+           optional<array<vec2, 3>> texcoords,
            const Material *material);
   ;
 
-  Triangle(array<vec3, 3> vertices);
+  explicit Triangle(array<vec3, 3> vertices);
   /**
    * The three vertices that make up triangle.
    */
@@ -32,6 +33,7 @@ public:
    * shading.
    */
   std::optional<array<vec3, 3>> normals;
+  std::optional<array<vec2, 3>> texcoords;
 
   const Material *material = nullptr;
 
@@ -45,6 +47,8 @@ public:
   [[nodiscard]] optional<vec3> intersects(vec3 ray, vec3 origin) const;
 
   float area() const;
+  vec3 tangent;
+  vec3 bitangent;
 };
 
 class Object {

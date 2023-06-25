@@ -41,3 +41,6 @@ compile_commands.json
 
 cmake-build-release/
 cmake-build-debug/
+
+*.blend1.devenv*
+*.exr

@@ -1,16 +1,14 @@
 #pragma once
 
 #include "shader.hpp"
+#include "bsdf.hpp"
 
 class PathTracerShader : public Shader {
 private:
-  vec3 background;
-  vec3 diffuseReflection(const Intersection &isect, const Material &material,
-                         int depth);
-  vec3 specularReflection(const Intersection &isect, const Material &material,
-                          int depth);
-  vec3 directLighting(const Intersection &isect, const Material &material);
-  vec3 getColorInternal(const Intersection &intersection, int depth);
+  vec3 background{.0f};
+  [[nodiscard]] vec3 estimateDirect(const Intersection &intersection, const Light &light, const BSDF &bsdf) const;
+  vec3 uniformSampleAllLights(const Intersection &intersection,
+                              const BSDF &bsdf) const;
 
 public:
   explicit PathTracerShader(const Scene &scene) : Shader(scene){};
