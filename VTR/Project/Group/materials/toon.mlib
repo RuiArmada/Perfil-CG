@@ -1,0 +1,167 @@
+<?xml version="1.0" ?>
+<materialLib name="toon" >
+
+    <textures>
+        <texture name="noise" filename="../textures/noiseTexture.png"/>
+    </textures>
+    <shaders>
+        <shader
+            name="toon"
+            vs="../shaders/toon.vert"
+            ps="../shaders/toon.frag"
+        />
+        <shader
+            name="gatherInfo"
+            vs="../shaders/gatherInfo.vert"
+            ps="../shaders/gatherInfo.frag"
+        />
+    </shaders>
+
+    <renderTargets>
+        <renderTarget name="info">
+                    <SIZE width="800" height="400" />
+                    <colors>
+                        <color name="posMap" internalFormat="RGBA32F" />
+                    </colors>
+        </renderTarget>
+    </renderTargets>
+
+    <materials>
+        <material name="toon" >
+            <shader name="toon" >
+                <values>
+                    <valueof 
+                        uniform="l_dir"
+                        type="LIGHT"
+                        component="DIRECTION"
+                        id="0"
+                    />
+                    <valueof
+                        uniform="m_pvm"
+                        type="RENDERER"
+                        component="PROJECTION_VIEW_MODEL"
+                    />
+                    <valueof
+                        uniform="diffuse"
+                        type="COLOR"
+                        component="DIFFUSE"
+                    />
+                    <valueof
+                        uniform="shininess"
+                        type="COLOR"
+                        component="SHININESS"
+                    />
+                    <valueof
+                        uniform="specular"
+                        type="COLOR"
+                        component="SPECULAR"
+                    />
+                    <valueof 
+                        uniform="m_normal"
+                        type="RENDERER"
+                        component="NORMAL"
+                    />
+                    <valueof
+                        uniform="m_view"
+                        type="RENDERER"
+                        component="VIEW"
+                    />
+                    <valueof
+                        uniform="posTexture"
+                        type="TEXTURE_BINDING"
+                        id="1" component="UNIT"
+                    />
+                    <valueof
+                        uniform="noise"
+                        type="TEXTURE_BINDING"
+                        id="2" component="UNIT"
+                    />
+                    <valueof
+                        uniform="divisions_lines"
+                        type="RENDERER"
+                        component="divisions_lines"
+                    />
+                    <valueof
+                        uniform="divisions_dither"
+                        type="RENDERER"
+                        component="divisions_dither"
+                    />
+                    <valueof
+                        uniform="line_growth"
+                        type="RENDERER"
+                        component="line_growth"
+                    />
+                    <valueof
+                        uniform="darkness_limit"
+                        type="RENDERER"
+                        component="darkness_limit"
+                    />
+                    <valueof
+                        uniform="outline_check_radius"
+                        type="RENDERER"
+                        component="outline_check_radius"
+                    />
+                    <valueof
+                        uniform="outline_min_dif"
+                        type="RENDERER"
+                        component="outline_min_dif"
+                    />
+                    <valueof
+                        uniform="outline_max_dif"
+                        type="RENDERER"
+                        component="outline_max_dif"
+                    />
+                    <valueof
+                        uniform="outline_color"
+                        type="RENDERER"
+                        component="outline_color"
+                    />
+                    <valueof
+                        uniform="noise_scale"
+                        type="RENDERER"
+                        component="noise_scale"
+                    />
+                </values>
+            </shader>
+            <textures>
+                <texture name="posMap" UNIT="1">
+                    <MAG_FILTER value= "NEAREST" />
+					<MIN_FILTER value= "NEAREST" />
+                </texture>
+                <texture name="noise" UNIT="2">
+                    <MAG_FILTER value= "NEAREST" />
+					<MIN_FILTER value= "NEAREST" />
+                </texture>
+            </textures>
+            <color>
+                <SHININESS value="700"/>
+                <SPECULAR r="3.5" g="3.5" b="3.5" a="1.0" />
+                <DIFFUSE r="0.6" g="0.6" b="0.6" a="1.0" />
+            </color>
+        </material>
+        <material name="gatherInfo">
+            <color>
+				<AMBIENT r="0.2" g="0.2" b="0.2" a="1.0" />
+				<DIFFUSE r="0.8" g="0.8" b="0.8" a="1.0" />
+				<SPECULAR r="0.2" g="0.2" b="0.2" a="1.0" />
+				<EMISSION r="0.0" g="0.0" b="0.0" a="1.0" />
+				<SHININESS value="0.0" />
+			</color>
+            <shader name="gatherInfo">
+                <values>
+                    <valueof
+                        uniform="m_pvm"
+                        type="RENDERER"
+                        component="PROJECTION_VIEW_MODEL"
+                    />
+                    <valueof
+                        uniform="m_vm"
+                        type="RENDERER"
+                        component="VIEW_MODEL"
+                    />
+                </values>
+            </shader>
+        </material>
+    </materials>
+
+</materialLib>

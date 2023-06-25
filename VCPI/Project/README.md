@@ -1,1 +1,0 @@
-# VCPI-Grupo

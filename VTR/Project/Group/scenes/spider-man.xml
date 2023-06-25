@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<project name="Toon: Spider-Man" width="800" height="400">
+    <assets>
+        <attributes>
+			<attribute type="RENDERER" name="divisions_lines" data="INT" value="235" />
+            <attribute type="RENDERER" name="divisions_dither" data="INT" value="237" />
+            <attribute type="RENDERER" name="line_growth" data="FLOAT" value="1" />
+            <attribute type="RENDERER" name="darkness_limit" data="FLOAT" value="0.5" />
+            <attribute type="RENDERER" name="outline_check_radius" data="INT" value="1" />
+            <attribute type="RENDERER" name="outline_min_dif" data="FLOAT" value="0.1" />
+            <attribute type="RENDERER" name="outline_max_dif" data="FLOAT" value="0.2" />
+            <attribute type="RENDERER" name="outline_color" data="VEC4" x="0" y="0" z="0"/>
+            <attribute type="RENDERER" name="noise_scale" data="FLOAT" value="1" />
+		</attributes>
+
+        <scenes>
+            <scene name = "spider">
+                <file name = "../models/spooder.obj"/>
+                <ROTATE x="0" y="1" z="0" w="180"/>
+                <SCALE x="0.075" y="0.075" z="0.075" />
+            </scene>
+            <scene name = "plane">
+                <file name = "../models/plane.obj"/>
+                <SCALE x="4" y="4" z="4" />
+                <ROTATE x="1" y="0" z="0" w="-90"/>
+                <TRANSLATE x="0" y="0" z="2" />
+            </scene>
+        </scenes>
+        
+        <cameras>
+            <camera name="main">
+                <POSITION x="0" y="0" z="-4" />
+                <VIEW x="0" y="0" z="1"/>
+                <projection NEAR="0.1"/>
+            </camera>
+        </cameras>
+
+        <lights>
+            <light name="sun" >
+                <DIRECTION x="5" y="-5" z="5" />
+            </light>
+        </lights>
+
+        <materialLibs>
+            <materialLib filename="../materials/toon.mlib" />
+        </materialLibs>
+
+        <viewports>
+            <viewport name="posVisualizer">
+                <ORIGIN x='0.0' y="75.0" />
+                <CLEAR_COLOR r="1.0" g="1.0" b="1.0" />
+                <SIZE width='0.2' height='0.2' />
+            </viewport>
+            <viewport name="main">
+                <ORIGIN x='0.0' y="0.0" />
+                <CLEAR_COLOR r="1.0" g="1.0" b="1.0" />
+                <SIZE width='1' height='1' />
+            </viewport>
+        </viewports>
+
+    </assets>
+
+    <pipelines>
+        <pipeline name="toon" defaultCamera="main">
+            <pass class="default" name="depthMap">
+                <scenes>
+                    <scene name="spider"/>
+                    <!--<scene name="plane"/> -->
+                </scenes>
+                <camera name="main"/>
+                <renderTarget name="info" fromLibrary="toon"/>
+                <viewport name='main'/>
+                <materialMaps>
+                    <map fromMaterial="*" toLibrary="toon" toMaterial="gatherInfo" />
+                </materialMaps>
+            </pass>
+
+            <pass name="toon" class="default" >
+                <scenes>
+                    <scene name="spider" />
+                    <scene name="plane" />
+                </scenes>
+                <camera name="main" /> 
+                <lights>
+                    <light name="sun" />
+                </lights>
+                <materialMaps>
+					<map fromMaterial="*" toMaterial="toon" toLibrary="toon" />
+				</materialMaps>
+                <viewport name="main" />
+            </pass>
+
+            <pass class="quad" name="visualization2">
+				<viewport name="posVisualizer" />				
+				<texture name="posMap" fromLibrary="toon"/>
+			</pass>
+
+        </pipeline>
+    </pipelines>
+    <interface>
+        <window label="Settings">
+            <var label="Line divisions" type="RENDERER" context="CURRENT" component="divisions_lines" def="min=1 max=500 step=1"/>
+            <var label="Dithering divisions" type="RENDERER" context="CURRENT" component="divisions_dither" def="min=1 max=500 step=1"/>
+            <var label="Line growth" type="RENDERER" context="CURRENT" component="line_growth" def="min=1 max=20 step=0.1"/>
+            <var label="Darkness threshold" type="RENDERER" context="CURRENT" component="darkness_limit" def="min=0 max=1 step=0.01"/>
+            <var label="Outline check radius" type="RENDERER" context="CURRENT" component="outline_check_radius" def="min=1 max=10 step=1"/>
+            <var label="Min pos dif" type="RENDERER" context="CURRENT" component="outline_min_dif" def="min=0.01 max=10 step=0.01"/>
+            <var label="Max pos dif" type="RENDERER" context="CURRENT" component="outline_max_dif" def="min=0.01 max=10 step=0.01"/>
+            <var label="Outline Color" type="RENDERER" context="CURRENT" component="outline_color" mode="COLOR"/>
+            <var label="Noise Scale" type="RENDERER" context="CURRENT" component="noise_scale" def="min=0 max=20 step=1"/>
+
+        </window>
+    </interface>
+</project>
