@@ -2,6 +2,10 @@
 
 DeepLearning model capable of turning paintings into photos.
 
+## Author
+
+* [Rui Armada](https://github.com/RuiArmada)
+
 ## Grade
 
 ⭐(14.0/20)
