@@ -9,5 +9,5 @@
 
 ## Grades
 
-* Individual: (10.0/10)
-* Group: (6.5/7)
+* [Individual](VTR/Project/Individual): (10.0/10)
+* [Group](VTR/Project/Group): (6.5/7)
