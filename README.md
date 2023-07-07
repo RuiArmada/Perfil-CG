@@ -16,4 +16,4 @@ Assigments done during my major on **Computer Graphics** 👾
 
 
 
-> Note: Be advised that most of the reports are in portuguese instead of english.
+> Be advised that most of the reports are in portuguese instead of english.
