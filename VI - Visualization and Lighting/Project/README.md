@@ -6,7 +6,7 @@ Implementation of a Raytracer in C++.
 
 * For easy use it's advised to install [CLion](https://www.jetbrains.com/clion/download/#section=windows)
 * Use the Build Function to compile everything
-* Run `./vi-rt models/*.json` to generate a output image of the model as long as there's a *.json* file of it
+* Run `./vi-rt models/*.json` to generate a output image of the model as long as there's a `.json` file of it
 
 ## Deliveries
 
