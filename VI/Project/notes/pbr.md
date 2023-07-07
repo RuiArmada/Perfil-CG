@@ -2,34 +2,27 @@
 
 https://typhomnt.github.io/teaching/ray_tracing/pbr_intro/
 
-Neste momento, o nosso _renderer_ não conserva energia. Uma superficie pode
-refletir mais luz do que aquela que recebe, levando a _renders_ pouco realistas
-e que frequentemente causam _overexposure_.
+At the moment, our _renderer_ does not conserve energy. A surface can reflect more light than it receives, resulting in unrealistic _renders_ and frequent _overexposure_.
 
-Podemos resolver este problema usando um modelo PBR.
+We can solve this problem by using a PBR (Physically Based Rendering) model.
 
 ## Micro-facet
 
-No modelo PBR, cada superfície é simulada como sendo constituida de
-micro-faces, cada uma apontando numa direção ligeiramente diferente. Quão mais
-suave for a superfície, mais uniforme será a direção destas superfícies, sendo
-completamente uniforme num espelho.
+In the PBR model, each surface is simulated as being composed of micro-faces, each pointing in a slightly different direction. The smoother the surface, the more uniform the direction of these micro-faces, being completely uniform in a mirror.
 
-## Equação da luz
-
-A luz num dado ponto $p$, visto da direção $v$ é dada pela equação
+## Light Equation
+The light at a given point $p$, as seen from the direction $v$, is given by the equation:
 
 $$L_o(p, v) = \int_{A} f_r(p, l, v, \alpha_p) L_i(p, l)(n * l) dl$$
 
-- $l$ -> Direção da luz incidente
-- $\alpha_p$ -> _roughness_ da superfície no ponto $p$
-- $L_i$ -> Radiância da luz incidente (cor RGB)
-- $f_r$ -> função que controla a luz refletida no material
-- $A$ -> hemisfério à volta de $p$
+- $l$ -> Direction of incident light
+- $\alpha_p$ -> _roughness_ of the surface at point $p$
+- $L_i$ -> Radiance of the incident light (RGB color)
+- $f_r$ -> Function that controls the reflected light in the material
+- $A$ -> Hemisphere around point $p$
 
-## Notas
+## Notes
 
-`illum` define o modelo de iluminação a usar. Se for 3, é metálico, e o
-parametro "Metallic" está representado no argumento Ka.
+`illum` specifies the lighting model to use. If it is 3, it is metallic, and the "Metallic" parameter is represented in the argument Ka
 
 http://paulbourke.net/dataformats/mtl/

@@ -16,3 +16,8 @@
 * Ensembles
 * Autoencoders
 * Generative Adversarial Networks
+
+## Grades
+
+* Individual: (14.0/20)
+* Group: (15.15/20)
