@@ -1,0 +1,36 @@
+newmtl white
+Ka 1 1 1
+Kd 0.7 0.7 0.7
+Ks 0 0 0
+
+newmtl glossy_white
+Ka 1 1 1
+Kd 0 0 0
+Ks 1 1 0
+Ns 50
+
+newmtl red
+Ka 1 0 0
+Kd 0.7 0 0
+Ks 0 0 0
+
+newmtl green
+Ka 0 1 0
+Kd 0 0.7 0
+Ks 0 0 0
+
+newmtl blue
+Ka 0 0 1
+Kd 0 0 0.7
+Ks 0 0 0
+
+newmtl light
+Ka 20 20 20
+Kd 1 1 1
+Ks 0 0 0
+
+newmtl mirror_mat
+Ka 0 0 0
+Kd 0 0 0
+Ks 0.9 0.9 0.9
+Ns 1000

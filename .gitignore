@@ -1,7 +1,3 @@
-*.mtl
-*.obj
-*.ini
-*.3ds
 testing/
 .vscode/
-VCPI/Classes/*/
+VCPI/Lectures/*/
