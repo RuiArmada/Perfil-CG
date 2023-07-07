@@ -12,3 +12,8 @@ Assigments done during my major on **Computer Graphics** 👾
 * [(19.0/20) Real-time Visualization](VTR/)
 * [(19.0/20) Visualization and Lighting](VI/)
 * [(15.0/20) Computer Vision and Image Processing](VCPI/)
+
+
+
+
+> Note: Be advised that most of the reports are in portuguese instead of english.
