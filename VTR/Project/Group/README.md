@@ -9,7 +9,7 @@ This project requires the [NAU](https://github.com/Nau3D/nau) 3D Engine.
 ## How to Run
 
 * Go to the [scenes](scenes/) directory
-* Drag and drop any *.xml* into NAU's *composerImGui* binary file.
+* Drag and drop any `.xml` into NAU's `composerImGui` application file.
 
 ## Authors
 
@@ -19,7 +19,7 @@ This project requires the [NAU](https://github.com/Nau3D/nau) 3D Engine.
 
 ## Grade
 
-⭐(6.5/7)
+⭐ (6.5/7)
 
 ## Final Result
 

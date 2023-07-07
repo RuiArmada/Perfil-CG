@@ -10,4 +10,4 @@
 
 ## Grades:
 
-* [Group](Project/Group): (19.0/20)
+* [Group](Project/): (19.0/20)

@@ -16,7 +16,7 @@ Implementation of a Raytracer in C++.
 
 ## Grade
 
-⭐(19.0/20)
+⭐ (19.0/20)
 
 ## Final Result
 
