@@ -19,5 +19,5 @@
 
 ## Grades
 
-*  [Individual](VCPI/Project/Individual): (14.0/20)
-*  [Group](VCPI/Project/Group): (15.15/20)
+*  [Individual](Project/Individual): (14.0/20)
+*  [Group](Project/Group): (15.15/20)
