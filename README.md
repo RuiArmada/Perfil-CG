@@ -9,9 +9,9 @@ Assigments done during my major on **Computer Graphics** 👾
 
 ## Content
 
-* [(19.0/20) VTR: Real-time Visualization](VTR/)
-* [(19.0/20) VI: Visualization and Lighting](VI/)
-* [(15.0/20) VCPI: Computer Vision and Image Processing](VCPI/)
+* [(19.0/20) VTR - Real-time Visualization](VTR/)
+* [(19.0/20) VI - Visualization and Lighting](VI/)
+* [(15.0/20) VCPI - Computer Vision and Image Processing](VCPI/)
 
 
 
