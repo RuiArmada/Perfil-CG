@@ -9,11 +9,18 @@ Assigments done during my major on **Computer Graphics** 👾
 
 ## Content
 
-* [VTR - Real-time Visualization (19.0/20)](VTR/)
-* [VI - Visualization and Lighting (19.0/20)](VI/)
-* [VCPI - Computer Vision and Image Processing (15.0/20)](VCPI/)
+* [VTR - Real-time Visualization](VTR/)
+* [VI - Visualization and Lighting](VI/)
+* [VCPI - Computer Vision and Image Processing](VCPI/)
 
+## Grades
 
+| UC | Grade (out of 20) |
+| :---: | :---: |
+| VTR | 19.0 |
+| VI | 19.0 |
+| VCPI | 15.0 |
 
+Finished if an average of 18.
 
 > Be advised that most of the reports are in portuguese instead of english.
