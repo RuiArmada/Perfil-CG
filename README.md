@@ -9,9 +9,9 @@ Assigments done during my major on **Computer Graphics** 👾
 
 ## Content
 
-* [VTR - Real-time Visualization](https://github.com/RuiArmada/Perfil-CG/tree/main/VCPI%20-%20Computer%20Vision%20and%20Image%20Processing)
+* [VTR - Real-time Visualization](https://github.com/RuiArmada/Perfil-CG/tree/main/VTR%20-%20Real-time%20Visualization)
 * [VI - Visualization and Lighting](https://github.com/RuiArmada/Perfil-CG/tree/main/VI%20-%20Visualization%20and%20Lighting)
-* [VCPI - Computer Vision and Image Processing](https://github.com/RuiArmada/Perfil-CG/tree/main/VTR%20-%20Real-time%20Visualization)
+* [VCPI - Computer Vision and Image Processing](https://github.com/RuiArmada/Perfil-CG/tree/main/VCPI%20-%20Computer%20Vision%20and%20Image%20Processing)
 
 ## Grades
 
