@@ -21,6 +21,6 @@ Assigments done during my major on **Computer Graphics** 👾
 | VI | 19.0 |
 | VCPI | 15.0 |
 
-Finished if an average of 18.
+Finished with an average of 18.
 
 > Be advised that most of the reports are in portuguese instead of english.
