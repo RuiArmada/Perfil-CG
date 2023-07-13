@@ -8,4 +8,4 @@ Scientific paper about Unreal Engine's Nanite.
 
 ## Grade
 
-⭐ (10.0/10)
+⭐ (10.0/10) - Best Grade in the class of 22/23
