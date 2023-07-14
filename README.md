@@ -1,6 +1,6 @@
 # Perfil-CG
 
-Assigments done during my major on **Computer Graphics** 👾
+Assigments done during my major in **Computer Graphics** 👾
 
 * [CG Website](https://uce-cg.di.uminho.pt/)
 
@@ -23,4 +23,4 @@ Assigments done during my major on **Computer Graphics** 👾
 
 Finished with an average of 18.
 
-> Be advised that most of the reports are in portuguese instead of english.
+> Be advised that most of the reports are in Portuguese instead of English.
