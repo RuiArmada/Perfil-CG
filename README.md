@@ -6,6 +6,7 @@ Assigments done during my major in **Computer Graphics** 👾
 
 * [My Notes](https://wide-joke-855.notion.site/Computa-o-Gr-fica-MEI-ddc429380c654a6dbb7897194b0542c1) 🇵🇹
 
+> Be advised that most of the reports are in Portuguese instead of English.
 
 ## Content
 
@@ -22,5 +23,3 @@ Assigments done during my major in **Computer Graphics** 👾
 | VCPI | 15.0 |
 
 Finished with an average of 18.
-
-> Be advised that most of the reports are in Portuguese instead of English.
