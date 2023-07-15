@@ -23,3 +23,4 @@ Assigments done during my major in **Computer Graphics** 👾
 | VCPI | 15.0 |
 
 Finished with an average of 18.
+
