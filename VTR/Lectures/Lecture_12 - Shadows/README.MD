@@ -4,6 +4,9 @@
   <img  src="images/img.png"  height="300" width="550">
 </p>
 
+
+> Note: unfinished
+
 ---
 
 ## Topics
@@ -15,5 +18,3 @@
 ## Assignment
 
 Complete the project to implement PCF shadows
-
-> Note: unfinished
