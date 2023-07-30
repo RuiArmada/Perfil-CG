@@ -5,8 +5,6 @@
   <img  src="images/img.png"  height="300" width="550">
 </p>
 
-> Left: Specular Result | Right: Spotlight Result
-
 ---
 
 ## Topics
