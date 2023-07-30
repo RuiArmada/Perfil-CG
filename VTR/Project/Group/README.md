@@ -3,7 +3,7 @@
 Implementation of stylized comic-book like shader (Non-Photorealistic Rendering).
 
 <p align="center">
-  <img  src="images/img.png"  height="300" width="490">
+  <img  src="images/img.png"  height="300" width="520">
 </p>
 
 ---
