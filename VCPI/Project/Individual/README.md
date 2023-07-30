@@ -2,16 +2,20 @@
 
 DeepLearning model capable of turning paintings into photos.
 
-## Author
+<p align="center">
+  <img  src="images/img.png"  height="300" width="490">
+</p>
+
+---
+
+### Dependencies
+
+This project requires the [Tensorflow](https://www.tensorflow.org/).
+
+### Author
 
 * [Rui Armada](https://github.com/RuiArmada)
 
-## Grade
+### Grade
 
 ⭐(14.0/20)
-
-## Final Result
-
-<p align="center">
-  <img  src="images/img.png">
-</p>

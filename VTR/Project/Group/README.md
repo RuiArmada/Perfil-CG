@@ -1,28 +1,29 @@
 # Comicbook Shader
 
-Implementation of Non-Photorealistic Rendering.
+Implementation of stylized comic-book like shader (Non-Photorealistic Rendering).
 
-## Dependencies
+<p align="center">
+  <img  src="images/img.png"  height="300" width="490">
+</p>
+
+---
+
+### Dependencies
 
 This project requires the [NAU](https://github.com/Nau3D/nau) 3D Engine.
 
-## How to Run
+### How to Run
 
 * Go to the [scenes](scenes/) directory
 * Drag and drop any `.xml` into NAU's `composerImGui` application file.
 
-## Authors
+### Authors
 
 * [Alexandre Flores](https://github.com/SugaryLump)
 * [Pedro Alves](https://github.com/pta2002)
 * [Rui Armada](https://github.com/RuiArmada)
 
-## Grade
+### Grade
 
 ⭐ (6.5/7)
 
-## Final Result
-
-<p align="center">
-  <img  src="images/img.png">
-</p>
