@@ -3,7 +3,7 @@
 DeepLearning model capable of turning paintings into photos.
 
 <p align="center">
-  <img  src="images/img.png"  height="300" width="490">
+  <img  src="images/img.png"  height="300" width="550">
 </p>
 
 ---
