@@ -1,4 +1,4 @@
-# VCPI - Painting into Photo
+# VCPI - Monet2Photo
 
 DeepLearning model capable of turning paintings into photos.
 
