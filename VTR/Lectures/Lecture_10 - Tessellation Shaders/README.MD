@@ -1,5 +1,14 @@
 # Lecture 10
 
+<p align="center">
+  <img  src="images/img.png"  height="300" width="550">
+  <img  src="images/img2.png"  height="300" width="550">
+</p>
+
+> Left: Bezier Tesselation | Right: PN Triangles
+
+---
+
 ## Topics
 
 * Features and functionality of the Tessellation shaders
@@ -10,15 +19,3 @@
 ## Assignment
 
 Implement Phong Tessellation
-
-## Bezier  Tesselation
-
-<p align="center">
-  <img  src="images/img.png">
-</p>
-
-## PN Triangles
-
-<p align="center">
-  <img  src="images/img2.png">
-</p>

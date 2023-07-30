@@ -1,5 +1,11 @@
 # Lecture 8
 
+<p align="center">
+  <img  src="images/img.png"  height="300" width="550">
+</p>
+
+---
+
 ## Topics
 
 * Computing NM in tangent space and in camera space
@@ -10,9 +16,3 @@
 ## Assignment
 
 Implement deferred mapping, deferred multisampling and parallax mapping
-
-## Final Result
-
-<p align="center">
-  <img  src="images/img.png">
-</p>

@@ -1,5 +1,11 @@
 # Lecture 12
 
+<p align="center">
+  <img  src="images/img.png"  height="300" width="550">
+</p>
+
+---
+
 ## Topics
 
 * Shadow Volumes
@@ -11,9 +17,3 @@
 Complete the project to implement PCF shadows
 
 > Note: unfinished
-
-## Final Result
-
-<p align="center">
-  <img  src="images/img.png">
-</p>

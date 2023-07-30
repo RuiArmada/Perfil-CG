@@ -1,5 +1,11 @@
 # Lecture 6
 
+<p align="center">
+  <img  src="images/img.png"  height="300" width="550">
+</p>
+
+---
+
 ## Topics
 
 * Reflection and refraction
@@ -10,9 +16,3 @@
 ## Assignment
 
 Implement shaders for chromatic dispersion
-
-## Final Result
-
-<p align="center">
-  <img  src="images/img.png">
-</p>

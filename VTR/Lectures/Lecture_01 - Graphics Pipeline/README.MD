@@ -1,5 +1,11 @@
 # Lecture 1
 
+<p align="center">
+  <img  src="images/img.png"  height="300" width="550">
+</p>
+
+---
+
 ## Topics
 
 * Course presentation and details of the assessment procedure
@@ -10,9 +16,3 @@
 ## Assignment
 
 Experiment with NAU graphics engine
-
-## Final Result
-
-<p align="center">
-  <img  src="images/img.png">
-</p>

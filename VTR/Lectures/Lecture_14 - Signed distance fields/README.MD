@@ -1,5 +1,12 @@
 # Lecture 14
 
+<p align="center">
+  <img  src="images/img.png"  height="300" width="550">
+</p>
+
+---
+
+
 ## Topics
 
 * Geometric solid constructive geometry
@@ -9,10 +16,3 @@
 ## Assignment
 
 Complete the project to implement a ray caster on a SDF and compose a scene using the SDF operators
-
-
-## Final Result
-
-<p align="center">
-  <img  src="images/img.png">
-</p>

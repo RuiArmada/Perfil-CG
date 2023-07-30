@@ -1,5 +1,11 @@
 # Lecture 7
 
+<p align="center">
+  <img  src="images/img.png"  height="300" width="550">
+</p>
+
+---
+
 ## Topics
 
 * Normal mapping and bump mapping
@@ -10,9 +16,3 @@
 ## Assignment
 
 Implement normal mapping
-
-## Final Result
-
-<p align="center">
-  <img  src="images/img.png">
-</p>

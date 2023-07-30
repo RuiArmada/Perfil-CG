@@ -1,5 +1,11 @@
 # Lecture 4
 
+<p align="center">
+  <img  src="images/img.png"  height="300" width="550">
+</p>
+
+---
+
 ## Topics
 
 * Texture coordinates as a vertex attribute
@@ -10,8 +16,3 @@
 
 Update the shaders to perform multitexturing on a cube
 
-## Final Result
-
-<p align="center">
-  <img  src="images/img.png">
-</p>
