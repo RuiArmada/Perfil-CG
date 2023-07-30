@@ -5,8 +5,6 @@
   <img  src="images/img2.png"  height="300" width="550">
 </p>
 
-> Left: Bezier Tesselation | Right: PN Triangles
-
 ---
 
 ## Topics
