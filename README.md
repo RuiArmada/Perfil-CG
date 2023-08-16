@@ -4,9 +4,7 @@ Assigments done during my major in **Computer Graphics** 👾
 
 * [CG Website](https://uce-cg.di.uminho.pt/)
 
-* [My Notes](https://wide-joke-855.notion.site/Computa-o-Gr-fica-MEI-ddc429380c654a6dbb7897194b0542c1) 🇵🇹
-
-> Be advised that most of the reports are in Portuguese instead of English.
+> Be advised that most of the reports are in Portuguese instead of English. 
 
 ## Content
 
